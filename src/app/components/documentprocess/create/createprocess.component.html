@@ -1,0 +1,43 @@
+<p-toast></p-toast>
+<div>
+    <div> </div>
+    <p-toolbar>
+        <div class="ui-toolbar-group-left">
+                <button pButton type="button" label="Xác nhận" (click)="Save()" icon="pi pi-check"
+                class="ui-button-success" style="margin-right: .25em !important;"></button>
+        </div>
+        <div class="ui-toolbar-group-right">
+                <button pButton type="button" label="Thêm tiến trình" (click)="AddProcess()" icon="pi pi-check"
+                class="ui-button-success" style="margin-right: .25em !important;"></button>
+        </div>
+    </p-toolbar>
+    <br/>
+
+    <div class="process-area">
+        <div class="process-card" data-id="1">
+            <div class="process-card-label jumbotron" title="Click to change">
+                Thống nhất
+            </div>
+            <div class="text-center">
+                <label class="close-card"><i class="fas fa-times"></i></label>
+            </div>
+
+        </div>
+        <div class="process-card" data-id="2">
+            <div class="process-card-label jumbotron" title="Click to change">
+                Phê duyệt
+            </div>
+            <div class="text-center">
+                <label class="close-card"><i class="fas fa-times"></i></label>
+            </div>
+        </div>
+        <div class="process-card" data-id="4">
+            <div class="process-card-label jumbotron" title="Click to change">
+                Đăng ký
+            </div>
+            <div class="text-center">
+                <label class="close-card"><i class="fas fa-times"></i></label>
+            </div>
+        </div>
+    </div>
+</div>

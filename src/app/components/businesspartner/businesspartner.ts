@@ -1,0 +1,61 @@
+export interface BusinessPartnerDisplayModel{
+    PartnerId?:number;
+    Name?:string;
+    ResponsibleUserId?:number;
+    ResponsibleUserFullName?:string;
+    PhoneNumber?:string;
+}
+export interface BaseBusinessPartnerModel{
+    PartnerId?:number;
+    Name?:string;
+    ResponsibleUserId?:number;
+}
+export interface BusinessPartnerModel{
+    PartnerId?:number;
+    Name?:string;
+    ResponsibleUserId?:number;
+    BusinessTypeId?:number;
+    TaxCode?:string;
+    AgencyCode?:string;
+    BusinessCode?:string;
+    BusinessRegisteredCode?:string;
+    RegisteredAddress?:string;
+    ActualAddress?:string;
+    Fax?:string;
+    Email?:string;
+    PhoneNumber?:string;
+    Website?:string;
+    Note?:string;
+}
+export interface BusinessPartnerCreateModel{
+    Name?:string;
+    ResponsibleUserId?:number;
+    BusinessTypeId?:number;
+    TaxCode?:string;
+    AgencyCode?:string;
+    BusinessCode?:string;
+    BusinessRegisteredCode?:string;
+    RegisteredAddress?:string;
+    ActualAddress?:string;
+    Fax?:string;
+    Email?:string;
+    PhoneNumber?:string;
+    Website?:string;
+    Note?:string;
+}
+export interface BusinessPartnerUpdateModel{
+    Name?:string;
+    ResponsibleUserId?:number;
+    BusinessTypeId?:number;
+    TaxCode?:string;
+    AgencyCode?:string;
+    BusinessCode?:string;
+    BusinessRegisteredCode?:string;
+    RegisteredAddress?:string;
+    ActualAddress?:string;
+    Fax?:string;
+    Email?:string;
+    PhoneNumber?:string;
+    Website?:string;
+    Note?:string;
+}

@@ -1,0 +1,168 @@
+<div>
+
+  <p-breadcrumb [model]="BreadcrumbItems" [home]="BreadcrumbHome"></p-breadcrumb>
+  <p-toast></p-toast>
+  <div class="page_title">
+    <h2>Tài khoản hệ thống</h2>
+  </div>
+  <div class="container-fluid">
+    <div>
+      <p-table #dt [value]="users" [paginator]="true" [rows]="10" [columns]="cols" [(selection)]="selectedUser" dataKey="UserId">
+        <ng-template pTemplate="caption">
+          <div style="display:flex">
+            <div>
+              <button pButton type="button" icon="fas fa-plus-circle" label="Tạo mới" (click)="openCreate()"></button>
+              <button type="button" pButton icon="fas fa-file-excel" label="Xuất dữ liệu" iconPos="left" (click)="dt.exportCSV()"
+                class="ui-button-warning"></button>
+              <button pButton type="button" icon="fas fa-trash" label="Xóa nhiều" (click)="deleteItems()" class="ui-button-danger"
+                *ngIf="selectedStudent&&selectedStudent.length>1"></button>
+            </div>
+            <div style="flex: 1;text-align: right;">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" placeholder="Tìm trong bảng" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width:auto">
+
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 3em">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th style="width: 4em">STT</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+            </th>
+            <th style="width:10em"></th>
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input *ngSwitchCase="'UserName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input *ngSwitchCase="'FullName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <div *ngSwitchCase="'CreatedOnDate'"></div>
+              <p-dropdown *ngSwitchCase="'Department'" [options]="filter_departments" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+          <tr [pSelectableRow]="item">
+            <td>
+              <p-tableCheckbox [value]="item"></p-tableCheckbox>
+            </td>
+            <td>{{rowIndex+1}}</td>
+            <td>{{item.UserName}}</td>
+            <td>{{item.FullName}}</td>
+            <td>{{item.Department}}</td>
+            <td>{{getRole(item.UserRoleId)}}</td>
+            <td>{{item.CreatedOnDate | date:'dd/MM/yyyy'}}</td>
+            <td>
+              <button pButton icon="fa fa-eye" (click)="openDetail(item)" class="ui-button-success"></button>
+              <button pButton icon="fa fa-edit" (click)="openUpdate(item)" class="ui-button-warning"></button>
+              <button pButton icon="fa fa-trash" (click)="ConfirmDelete(item)" class="ui-button-danger"></button>
+            </td>
+          </tr>
+
+        </ng-template>
+      </p-table>
+    </div>
+    <p-dialog header="Chỉnh sửa thông tin" [(visible)]="displayUpdateDialog" [modal]="true" [responsive]="true" [style]="{width: '500px', minWidth: '200px'}"
+      [maximizable]="true" appendTo="body">
+      <div *ngIf="updateModel">
+        <div class="form-group row">
+          <div class="col-md-4">
+            Tên tài khoản
+          </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="updateModel.UserName">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            Tên mật khẩu
+          </div>
+          <div class="col-md-8">
+            <input type="password" class="form-control" [(ngModel)]="updateModel.Password">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            Tên đầy đủ
+          </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="updateModel.FullName">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            Thuộc phòng ban
+          </div>
+          <div class="col-md-8">
+            <p-dropdown [options]="dm_departments" [(ngModel)]="updateModel.DepartmentId" [autoWidth]="false" [style]="{width: '100%'}"></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại" class="ui-button-success"></button>
+        <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ" class="ui-button-danger"></button>
+      </p-footer>
+    </p-dialog>
+    <p-dialog header="Chi tiết tài khoản" [(visible)]="displayDetailDialog" [modal]="true" [responsive]="true" [style]="{width: '500px', minWidth: '200px'}"
+      [maximizable]="true" appendTo="body">
+      <div *ngIf="detailModel">
+        <div class="form-group row">
+          <div class="col-md-4">
+            Tên tài khoản
+          </div>
+          <div class="col-md-8">
+            {{detailModel.UserName}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            Mật khẩu
+          </div>
+          <div class="col-md-8">
+              {{detailModel.PassWord}}
+          
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            Tên đầy đủ
+          </div>
+          <div class="col-md-8">
+              {{detailModel.FullName}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-4">
+            Thuộc phòng ban
+          </div>
+          <div class="col-md-8">
+            {{detailModel.Department}}
+          </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+              Ngày tạo
+            </div>
+            <div class="col-md-8">
+              {{detailModel.CreatedOnDate | date:'dd/MM/yyyy'}}
+            </div>
+          </div>
+      </div>
+      <p-footer>
+        <button type="button" pButton icon="fas fa-times" (click)="displayDetailDialog=false" label="Đóng" class="ui-button-danger"></button>
+      </p-footer>
+    </p-dialog>
+    <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+  </div>
+
+</div>

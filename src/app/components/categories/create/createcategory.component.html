@@ -1,0 +1,54 @@
+<p-toast></p-toast>
+<div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Thuộc nhóm thể loại
+        </div>
+        <div class="col-md-8">
+            <p-dropdown [options]="dm_groups" [(ngModel)]="createModel.CategoryGroupId" [autoWidth]="false" [style]="{width: '85%'}"></p-dropdown>
+            <div style="text-align:right;float: right">
+                <button type="button" pButton icon="fas fa-plus-circle" (click)="openCreateGroup()" class="ui-button-success"></button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Tên thể loại
+        </div>
+        <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="createModel.Name">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Mô tả
+        </div>
+        <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="createModel.Description">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12" style="text-align: right">
+            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Lưu lại" class="ui-button-success"></button>
+            <button type="button" pButton icon="fas fa-times" (click)="close()" label="Hủy bỏ" class="ui-button-danger"></button>
+        </div>
+    </div>
+</div>
+<p-dialog header="Tạo mới nhóm thể loại tài liệu" [(visible)]="display" [modal]="true" [responsive]="true" appendTo="body">
+    <div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                Tên nhóm thể loại
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" [(ngModel)]="newGroupName">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12" style="text-align: right">
+                <button type="button" pButton icon="pi pi-check" (click)="createNewGroup()" label="Lưu lại" class="ui-button-success"></button>
+                <button type="button" pButton icon="fas fa-times" (click)="display=false" label="Hủy bỏ" class="ui-button-danger"></button>
+            </div>
+        </div>
+    </div>
+</p-dialog>

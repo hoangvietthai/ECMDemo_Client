@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group row">
+            <div class="col-md-4">
+                Đối tác
+            </div>
+            <div class="col-md-8">
+                <p-dropdown [options]="dm_partners" [(ngModel)]="createModel.PartnerId" [autoWidth]="false" [style]="{width: '100%'}"
+                    appendTo="body"></p-dropdown>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                Họ và tên
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control"  [(ngModel)]="createModel.Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                Chức vụ
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control"  [(ngModel)]="createModel.Position">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group row">
+            <div class="col-md-4">
+                Điện thoại công việc
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" [(ngModel)]="createModel.PersonalPhoneNumber">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                Điện thoại cá nhân
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control"[(ngModel)]="createModel.OfficePhoneNumber">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                Email
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" [(ngModel)]="createModel.Email">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                Ghi chú thêm
+            </div>
+            <div class="col-md-8">
+                <textarea class="form-control" rows="3"  [(ngModel)]="createModel.Note"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group row" style="text-align: right;margin-top: 20px">
+            <div class="col-md-12"> <button type="button" pButton icon="pi pi-check" (click)="save()" label="Lưu lại"
+                    class="ui-button-success"></button></div>
+
+
+        </div>
+    </div>
+</div>

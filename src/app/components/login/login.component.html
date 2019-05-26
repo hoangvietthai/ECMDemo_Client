@@ -1,0 +1,45 @@
+<div id="wrapper_login">
+    <div id="login_area">
+      <div id="login_area_body">
+        <form (submit)="login($event, username.value, password.value)">
+          <div class="form-group" id="username">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Tài khoản" #username id="username" name="username" required>
+            </div>
+            <i class="input_icon"></i>
+          </div>
+          <div class="form-group" id="password">
+            <div class="input-group">
+              <input class="form-control" type="password" placeholder="Mật khẩu" #password id="password" name="password" required>
+            </div>
+            <i class="input_icon"></i>
+          </div>
+          <div class="form-group" style="overflow: hidden;padding: 5px 10px;">
+            <div style="float: left;">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" checked="checked" class="custom-control-input form-control" id="remember_login" />
+                <label class="custom-control-label" for="remember_login">
+                  Nhớ đăng nhập
+                </label>
+              </div>
+              <span></span>
+            </div>
+            <div style="float: right;
+							height: 100%;
+							padding-top: 5px;
+							box-sizing: border-box;color:#03c3d8">
+              <a href="#" id="forget_passsword">Quên mật khẩu?</a>
+            </div>
+
+          </div>
+          <div class="form-group" id="btn_area">
+            <button class="btn t_bold t_uppercase" id="login_btn" type="submit">Đăng nhập</button>
+          </div>
+        </form>
+        <div id="response" *ngIf="error">
+          <span class="t_bold" style="color:red">Đăng nhập không thành công</span>
+          <span>{{error}}</span>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,236 @@
+<div>
+    <p-breadcrumb [model]="BreadcrumbItems" [home]="BreadcrumbHome"></p-breadcrumb>
+    <div class="page_title">
+        <h2>Chi tiết văn bản đến</h2>
+        <p-toast></p-toast>
+    </div>
+    <div class="container-fluid form_create">
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+                <button pButton type="button" label="Lưu lại" (click)="save()" icon="pi pi-check"
+                    class="ui-button-success" style="margin-right: .25em !important;"></button>
+              
+                <button pButton type="button" label="In" icon="fas fa-print" class="ui-button-primary"
+                    style="margin-right: .25em !important;"></button>
+            </div>
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" icon="pi pi-search" class="ui-button-secondary"></button>
+            </div>
+        </p-toolbar>
+        <div class="row" *ngIf="updateModel">
+            <div class="col-md-6">
+                <p-fieldset legend="Thông tin chung">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Dạng văn bản
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="dm_cates" [(ngModel)]="updateModel.CategoryId" [autoWidth]="false"
+                                [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" placeholder="Trích yếu nội dung"
+                                [(ngModel)]="updateModel.Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="3" placeholder="Nội dung vắn tắt"
+                                [(ngModel)]="updateModel.Summary"></textarea>
+                        </div>
+                    </div>
+                </p-fieldset>
+                <p-fieldset legend="Người gửi">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Người gửi
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="dm_partners" [(ngModel)]="updateModel.SenderId"
+                                (onChange)="OnPartnerChange($event)" [autoWidth]="false" [style]="{width: '100%'}"
+                                appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Người ký
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="dm_contacts" [(ngModel)]="updateModel.SignedByUserId"
+                                [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-8">
+                            <div>Ngày văn bản</div>
+                            <div>
+                                <p-calendar [(ngModel)]="updateModel.DocumentDate" dateFormat="dd/mm/yy"
+                                    [showTime]="true" [style]="{width: '100%'}"></p-calendar>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div>STT</div>
+                            <div>
+                                <input type="number" class="form-control" [(ngModel)]="updateModel.DocumentIndex">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </p-fieldset>
+                <p-fieldset legend="Người nhận">
+
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Doanh nghiệp
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="Doanh nghiệp chúng ta"
+                                value="Doanh nghiệp chúng ta" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Địa chỉ người nhận
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="users" [(ngModel)]="updateModel.ReceiverUserId" [autoWidth]="false"
+                                [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Bộ phận
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="departments" [(ngModel)]="updateModel.DepartmentId"
+                                [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Cách nhận
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="dm_delivery_methods" [(ngModel)]="updateModel.DeliveryMethodId"
+                                [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+
+                </p-fieldset>
+            </div>
+            <div class="col-md-6">
+                <p-fieldset legend="Mục tin">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Độ mật
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="dm_secretlevels" [(ngModel)]="updateModel.SecretLevel"
+                                [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Trạng thái
+                        </div>
+                        <div class="col-md-8">
+                            <textarea class="form-control" rows="3" disabled
+                                *ngIf="statusDoc">{{statusDoc.DisplayName}}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            Người chịu trách nhiệm
+                        </div>
+                        <div class="col-md-8">
+                            <p-dropdown [options]="users" [(ngModel)]="updateModel.ResponsibleUserId"
+                                [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                </p-fieldset>
+                <p-fieldset legend="Thông tin thêm">
+
+                    <div class="form-group row">
+
+                        <p-blockUI [blocked]="blocked" [target]="pnl"></p-blockUI>
+                        <div class="col-md-8">
+                            <p-panel #pnl>
+                                <div class="row form-group">
+                                    <div class="col-4"> Số đăng ký</div>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" placeholder="Số đăng ký"
+                                            [(ngModel)]="updateModel.ResignedNumber">
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        Ngày đăng ký
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <p-calendar [(ngModel)]="updateModel.ResignedOnDate" dateFormat="dd/mm/yy"
+                                            [showTime]="true" [style]="{width: '100%'}"></p-calendar>
+                                    </div>
+                                </div>
+                            </p-panel>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <button pButton type="button" label="Đăng ký" icon="fas fa-calendar-week"
+                                class="ui-button-info" style="margin-right: .25em !important;"
+                                (click)="Register()"></button>
+                        </div>
+                    </div>
+
+                </p-fieldset>
+                <p-fieldset legend="Tệp">
+                    <div class="form-group row">
+                        <div class="col-md-12" *ngIf="files_of_doc">
+                            <div>File đính kèm vừa thêm</div>
+                            <p-table [value]="files_of_doc" selectionMode="single">
+                                <ng-template pTemplate="header">
+
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                                    <tr>
+                                        <td> <a href="{{uploadDataUrl+'/'+item}}"><i class="fas fa-paperclip"></i> Tệp
+                                                đính kèm {{rowIndex+1}}</a> </td>
+                                        <td> <button pButton icon="fas fa-trash" (click)="ConfirmDeleteFile(item)"
+                                                class="ui-button-danger"></button></td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <div style="margin-top:15px;"></div>
+                        <div class="col-md-12">
+                            <div style="margin-bottom:5px;">Thêm tệp</div>
+                            <p-fileUpload mode="basic" #new_file name="myfile[]" customUpload="true"
+                                showUploadButton="false" showCancelButton="false"
+                                (uploadHandler)="myUploader($event,new_file)" (onSelect)="OnSelectFile($event,new_file)"
+                                multiple="multiple" chooseLabel="Chọn tệp" uploadLabel="Tải lên" cancelLabel="Hủy bỏ">
+                            </p-fileUpload>
+
+                            <ul class="list-unstyled" *ngIf="files_selected">
+                                <li *ngFor="let item of files_selected;let i=index">
+                                    <a href="#"><i class="fas fa-paperclip"></i> {{item.name}}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </p-fieldset>
+
+
+            </div>
+        </div>
+        <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+    </div>
+
+</div>

@@ -1,0 +1,125 @@
+<div>
+    <p-breadcrumb [model]="BreadcrumbItems" [home]="BreadcrumbHome"></p-breadcrumb>
+    <div class="page_title">
+        <div *ngIf="mainModel" [ngSwitch]="mainModel.ModuleId">
+            <h2 *ngSwitchCase="2">
+                    Chi tiết thực hiện văn bản đi
+            </h2>
+            <h2 *ngSwitchCase="3">
+                Chi tiết thực hiện văn bản đến
+            </h2>
+            <h2 *ngSwitchCase="4">
+                Chi tiết thực hiện văn bản nội bộ
+            </h2>
+            <h2 *ngSwitchDefault>
+                Chi tiết thực hiện văn bản
+            </h2>
+        </div>
+        <h2 *ngIf="!mainModel"> Chi tiết thực hiện văn bản</h2>
+    </div>
+    <p-toast></p-toast>
+    <div class="container-fluid form_create" *ngIf="mainModel">
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+
+            </div>
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" icon="fas fa-times" (click)="Close()"
+                    class="ui-button-secondary"></button>
+            </div>
+        </p-toolbar>
+        <div class="alert alert-primary" *ngIf="!isShowActions&&mainModel.IsFinished==0">
+            <strong>In process!</strong> Nhiệm vụ đang chờ để thực hiện. Việc thực hiện nhiệm vụ sẽ diễn ra tự động vào
+            thời gian tới.
+        </div>
+        <div class="alert alert-danger" *ngIf="IsExpired()&&isShowActions&&mainModel.IsFinished==0">
+            <strong>Đã quá hạn thực hiện nhiệm vụ!</strong> 
+        </div>
+        <div class="alert alert-primary" *ngIf="mainModel.IsFinished==1">
+            <strong>Đã kết thúc thực hiện!</strong> 
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <p-fieldset legend="Thông tin chung" U>
+                    <div *ngIf="documentModel">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <h5>{{mainModel.Name}}</h5>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12" *ngIf="dm_partners">
+                                Đối tác: {{GetPartnerName(documentModel.ReceiverId)}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                Thời hạn thực hiện: {{mainModel.FinishedOnDate | dateToTime}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                Mức độ quan trọng: {{GetPriority(mainModel.PriorityLevel)}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12" *ngIf="InvokeUsers">
+                                Người nhận:
+                                <span *ngFor="let item of InvokeUsers" >
+                                    <button style="padding:0;margin-right: 10px;" class="btn btn-link"
+                                        (click)="DetailUser(item.value)">{{item.label}}</button>
+                                </span>
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12" *ngIf="Author">
+                                Tác giả: <button class="btn btn-link" style="padding:0"
+                                    (click)="DetailUser(Author.value)" >{{Author.label}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+            <div class="col-4">
+                <p-fieldset legend="Tệp cần thực hiện">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="col-md-12" *ngIf="files_of_doc">
+                                <p-table [value]="files_of_doc" selectionMode="single">
+                                    <ng-template pTemplate="header">
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                                        <tr>
+                                            <td> <a href="{{uploadDataUrl+'/'+item}}"><i class="fas fa-paperclip"></i>
+                                                    Tệp
+                                                    đính kèm {{rowIndex+1}}</a> </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+
+
+        <br />
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <textarea [(ngModel)]="responseModel.Note" rows="4" class="form-control"
+                        placeholder="Lưu ý của bạn"></textarea>
+                </div>
+
+            </div>
+        </div>
+        <div *ngIf="isShowActions&&!IsExpired()&&mainModel.IsFinished==0">
+            <button pButton type="button" label="thực hiện" icon="fas fa-check" style="margin-right: .25em !important;"
+                (click)="DoPerform()"></button>
+            <button pButton class="ui-button-danger" type="button" label="Không thực hiện" icon="fas fa-ban"
+                style="margin-right: .25em !important;" (click)="DoNotPerform()"></button>
+        </div>
+    </div>
+</div>

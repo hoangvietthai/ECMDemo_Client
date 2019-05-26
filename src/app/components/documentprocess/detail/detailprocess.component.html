@@ -1,0 +1,66 @@
+<p-toast></p-toast>
+<div>
+    <div class="process-area">
+        <div class="process-card" attr.data-id="item.TaskType" *ngFor="let item of processes">
+            <div class="process-card-label jumbotron" (click)="OpenDetail(item)" [ngClass]="getClass(item.Status)"
+                title="Click to view detail">
+                {{getTaskName(item.TaskType)}}
+            </div>
+            <div class="text-center">
+                <label class="close-card">({{item.OrderIndex}})</label>
+            </div>
+
+        </div>
+    </div>
+    <div style="margin-top:15px;">
+        <ul style="padding: 5px 15px;font-size: 12px;">
+            <li class="d-flex" style="margin:5px 0">
+                <div style="width:40px;height:15px;" class="alert-danger">
+                </div>
+                <div>&nbsp;&nbsp; Đã kết thúc</div>
+            </li>
+            <li class="d-flex" style="margin:5px 0">
+                <div style="width:40px;height:15px;" class="alert-success">
+
+                </div>
+                <div>&nbsp;&nbsp; Đang trong quá trình</div>
+            </li>
+            <li class="d-flex" style="margin:5px 0">
+                <div style="width:40px;height:15px;" class="alert-dark">
+
+                </div>
+                <div>&nbsp;&nbsp; Chưa bắt đầu</div>
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="finished" class="alert alert-success" style="margin: 5px 15px;">Tiến trình đã kết thúc!</div>
+    <div *ngIf="Active&&!finished" class="text-right">
+        <div *ngIf="Active.Status==2">
+            <span *ngIf="Next" style="font-style:italic">(Nhiệm vụ tiếp theo: {{getTaskName(Next.TaskType)}})
+                &nbsp;</span>
+            <button pButton type="button" label="Bắt đầu" title="Bắt đầu tiến trình tiếp theo" (click)="ActiveNext()"
+                icon="pi pi-check" class="ui-button-success"></button>
+        </div>
+        <div *ngIf="isStarted">
+            <span *ngIf="Active" style="font-style:italic">(Nhiệm vụ đầu tiên: {{getTaskName(Active.TaskType)}})
+                &nbsp;</span>
+            <button pButton type="button" label="Bắt đầu" title="Bắt đầu tiến trình đầu tiên" (click)="ActiveFirst()"
+                icon="pi pi-check" class="ui-button-success"></button>
+        </div>
+    </div>
+    
+</div>
+<p-dialog header="Bắt đầu tiến trình đăng ký" [(visible)]="dialogRegister" [modal]="true" [responsive]="true"
+    [style]="{width: '400px', minWidth: '200px'}" appendTo="body">
+    <div>
+        Bạn chắc chắn muốn bắt đầu tiến trình đăng ký cho tài liệu này chứ?
+    </div>
+
+
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="DoRegister()" label="Xác nhận"
+            class="ui-button-success"></button>
+        <button type="button" pButton icon="fas fa-times" (click)="dialogRegister=false" label="Hủy bỏ"
+            class="ui-button-danger"></button>
+    </p-footer>
+</p-dialog>

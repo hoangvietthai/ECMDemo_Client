@@ -1,0 +1,50 @@
+.tile_count .name {
+    font-size: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  #dashboard {
+    padding: 15px;
+  }
+  #dashboard .card {
+    width: 60%;
+    margin: auto;
+    padding: 15px;
+    text-align: center;
+    margin-top:80px;
+  }
+  .number_area{
+    text-align: center;
+  }
+  .number_box{
+    display: inline-block;
+    margin: 0 10px;
+  }
+  .number_box_index{
+    box-shadow: 0 0 5px #bbb;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .5s;
+  }
+  .number_box_index:hover{
+    background-color: #eee;
+  }
+  
+  .number_box_info{
+    margin-top: 10px;
+  }
+  .col-seen{
+    color: #b6b6b6 !important;
+  }
+  .col-notseen{
+    background: #eec883 !important;
+  }
+  table .btn-link{
+    padding: 0;
+  }

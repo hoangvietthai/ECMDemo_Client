@@ -1,0 +1,84 @@
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="profile">
+      <div class="profile_pic">
+        <img alt="..." class="img-circle profile_img" src="assets/images/logo.png">
+      </div>
+      <div class="profile_info">
+        <h2>ECM Demo</h2>
+      </div>
+    </div>
+  </div>
+  <ul class="list-unstyled components" *ngIf="user.UserRole>0">
+    <li>
+      <a [routerLink]="['/']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fa fa-home"></i>
+        Tổng quan</a>
+    </li>
+    <li>
+      <a [routerLink]="['/truy-van-van-ban']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-search"></i>
+        Truy vấn văn bản</a>
+    </li>
+    <li>
+      <a [routerLink]="['/quan-ly-tep']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"><i
+          class="fas fa-file-alt"></i> Tệp</a>
+    </li>
+    <li>
+      <a [routerLink]="['/van-ban-noi-bo']"><i class="fas fa-file-signature"></i> Văn bản nội bộ</a>
+    </li>
+    <li>
+      <a [routerLink]="['/van-ban-di']"><i class="fas fa-arrow-left"></i> Văn bản đi</a>
+    </li>
+    <li>
+      <a [routerLink]="['/van-ban-den']"><i class="fas fa-arrow-right"></i> Văn bản đến</a>
+    </li>
+
+
+  </ul>
+  <ul class="list-unstyled components" *ngIf="user.UserRole==0">
+    <li>
+      <a [routerLink]="['/quan-tri/danh-muc/tai-khoan-he-thong']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-user"></i> Tài khoản hệ thống</a>
+    </li>
+    <li>
+      <a [routerLink]="['/quan-tri/danh-muc/phong-ban']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-users"></i> Danh mục phòng ban</a>
+    </li>
+    <li>
+      <a [routerLink]="['/quan-tri/danh-muc/the-loai-tai-lieu']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-code-branch"></i> Thể loại tài liệu</a>
+    </li>
+    <li>
+      <a [routerLink]="['/quan-tri/danh-muc/doi-tac']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-hands-helping"></i> Đối tác</a>
+    </li>
+    <li>
+      <a [routerLink]="['/quan-tri/danh-muc/nguoi-lien-lac']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <i class="fas fa-id-card"></i> Người liên lạc</a>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <div class="d-flex justify-content-between" id="backtoapp">
+      <a title="Trở lại ứng dụng">
+        <i class="fas fa-chevron-circle-left"></i>
+      </a>
+      <a title="Ý kiến góp ý/ phản ánh">
+        <i class="fas fa-comments"></i>
+      </a>
+      <a title="Thông tin phần mềm">
+        <i class="fas fa-info-circle"></i>
+      </a>
+      <a title="Thoát" (click)="SignOut()">
+        <i class="fas fa-sign-out-alt"></i>
+      </a>
+    </div>
+
+  </div>
+</nav>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

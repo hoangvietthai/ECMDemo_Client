@@ -1,0 +1,44 @@
+.process-area{
+    display: flex;
+    justify-content: flex-start;
+    margin-top:15px;
+}
+.process-card{
+    width: 150px;
+    flex-basis: 150px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin: 5px 15px;
+}
+.process-card-label{
+    text-align: center;
+    padding: 15px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    position: relative;
+    cursor: pointer;
+    transition: .5s;
+}
+.process-card-label:hover{
+    background: #ED990B;
+}
+
+.process-card-label::after{
+    content: '\f061';
+    font-family: "Font Awesome 5 Free";
+    position: absolute;
+    right: -20px;
+}
+.process-card:last-child .process-card-label::after{
+    content: none;
+}
+.close-card{
+    font-weight: 700;
+    font-size: 20px;
+    cursor: pointer;
+    transition: .5s;
+}
+.close-card:hover{
+    transform: rotate(180deg);
+    color:red;
+}

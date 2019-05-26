@@ -1,0 +1,144 @@
+
+  
+  #center_area {
+    display: table-cell;
+    vertical-align: middle;
+  }
+body {
+    width: 100vw;
+    height: 100vh;
+    display: table;
+    font-size: 13px;
+    text-align: center;
+    background-color: #bbb;
+}
+#wrapper_login {
+    text-align: left;
+}
+#wrapper_login .dropdown-menu {
+    background: #fff !important;
+}
+#login_area {
+    margin: auto;
+    background: rgba(255,255,255,.8);
+    position: relative;
+}
+  
+input {
+    font-size: inherit !important;
+}
+  
+#login_area_header {
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+}
+  
+#login_area_header > div {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+}
+  
+#btn_area a {
+    width: 100%;
+    text-transform: uppercase;
+    font-size: inherit;
+    font-family: avo;
+    font-weight: 600;
+}
+  
+#btn_area ul li {
+    margin: 0;
+    width: 50%;
+}
+  
+#btn_area ul li:first-child {
+    width: 50%;
+    padding-right: 1px;
+    text-align: center;
+}
+  
+#btn_area ul li:last-child {
+    width: 49%;
+    padding-left: 10px;
+}
+  
+  
+  #login_btn {
+    background-color: #03c3d8;
+    color: #fff;
+    width:100%;
+  }
+  
+  
+  #response{
+    text-align:center;
+  }
+  #response span{
+    display:block;
+  }
+  #select_school > div {
+    cursor: pointer;
+  }
+  #select_school_area {
+    background: #96e3ff;
+    margin-bottom: 15px;
+    border-radius: 0 0 5px 5px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    #login_area {
+      padding: 15px;
+    }
+    #login_product_name {
+      font-size: 16px;
+    }
+    #wrapper_login {
+      height: 100vh;
+      position: relative;
+    }
+  }
+  
+  @media only screen and (min-width: 600px) {
+    #wrapper_login {
+      height: 100vh;
+      position: relative;
+      display: table-cell;
+      vertical-align: middle;
+    }
+    body {
+      display: table;
+      padding: 50px 0;
+    }
+    #login_area {
+      width: 500px;
+      padding: 25px;
+      border-radius: 10px;
+    }
+  }
+  
+  @media only screen and (min-width: 768px) {
+    body {
+      display: table;
+      padding:0;
+      overflow:hidden;
+    }
+    #wrapper_login {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    #login_area {
+      width: 500px;
+      padding: 25px;
+      border-radius: 10px;
+    }
+  }
+  /**/
+  @media only screen and (min-width: 992px) {
+  }
+  
+  @media only screen and (min-width: 1200px) {
+  }
+  

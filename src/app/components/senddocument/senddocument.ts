@@ -1,0 +1,90 @@
+export interface SendDocumentDisplayModel{
+    SendDocumentId?:number;
+    Name?:string;
+    ResignedNumber?:number;
+    ResignedOnDate?:Date;
+    SignedByUserFullName?:string;
+    Receiver?:string;
+    CreatedOnDate?:Date;
+    DocumentStatusId?:number;
+    DocumentProcessId?:number;
+}
+export interface BaseSendDocumentModel{
+    SendDocumentId?:number;
+    Name?:string;
+    Summary?:string;
+    CreatedOnDate?:Date;
+}
+export interface SendDocumentModel{
+    SendDocumentId?:number;
+    Name?:string;
+    Summary?:string;
+    CreatedOnDate?:Date;
+    CategoryId?:number;
+    SenderId?:number;
+    ResponseForRDocId?:number;
+    WrittenByUserId?:number;
+    DepartmentId?:number;
+    SignedByUserId?:number;
+    ReceiverId?:number;
+    ReceiverContactPersonId?:number;
+    DeliveryMethodId?:number;
+    ResponseDeadline?:Date;
+    SecretLevel?:number;
+    DocumentStatusId?:number;
+    ResponsibleUserId?:number;
+    CreatedByUserId?:number;
+    LastModifiedByUserId?:number;
+    LastModifiedOnDate?:Date;
+    IsDelete?:boolean;
+    ResignedNumber?:number;
+    ResignedOnDate?:Date;
+    IsSent?:boolean;
+    SentOnDate?:Date;
+    AttachedFileUrl?:string;
+    DocumentProcessId?:number;
+}
+export interface SendDocumentCreateModel{
+    Name?:string;
+    Summary?:string;
+    CreatedOnDate?:Date;
+    CategoryId?:number;
+    SenderId?:number;
+    ResponseForRDocId?:number;
+    WrittenByUserId?:number;
+    DepartmentId?:number;
+    SignedByUserId?:number;
+    ReceiverId?:number;
+    ReceiverContactPersonId?:number;
+    DeliveryMethodId?:number;
+    ResponseDeadline?:Date;
+    SecretLevel?:number;
+    DocumentStatusId?:number;
+    ResponsibleUserId?:number;
+    CreatedByUserId?:number;
+    ResignedNumber?:number;
+    ResignedOnDate?:Date;
+    AttachedFileUrl?:string;
+}
+export interface SendDocumentUpdateModel{
+    Name?:string;
+    Summary?:string;
+    CreatedOnDate?:Date;
+    CategoryId?:number;
+    SenderId?:number;
+    ResponseForRDocId?:number;
+    WrittenByUserId?:number;
+    DepartmentId?:number;
+    SignedByUserId?:number;
+    ReceiverId?:number;
+    ReceiverContactPersonId?:number;
+    DeliveryMethodId?:number;
+    ResponseDeadline?:Date;
+    SecretLevel?:number;
+    DocumentStatusId?:number;
+    ResponsibleUserId?:number;
+    LastModifiedByUserId?:number;
+    ResignedNumber?:number;
+    ResignedOnDate?:Date;
+    AttachedFileUrl?:string;
+}

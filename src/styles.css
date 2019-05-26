@@ -1,0 +1,191 @@
+/* You can add global styles to this file, and also import other style files */
+.form_create .form-group{
+  margin-bottom: 5px;
+}
+body .ui-button{
+  margin-right: 5px !important;
+}
+body .ui-splitbutton.ui-buttonset .ui-button:first-child{
+  margin-right: 0 !important;
+}
+.ui-fieldset-legend{
+  width: auto;
+    font-size: inherit;
+    color: green;
+}
+.ui-inputtext{
+  max-width: 100%;
+  width: 100%;
+}
+.ui-tree{
+  width: 100%;
+}
+input,textarea{
+  font-size: inherit !important;
+}
+.mCSB_container{
+    height: 100%;
+}
+
+body,body .ui-widget {
+    font-family: 'Roboto', sans-serif;
+  }
+  .wrapper {
+    display: flex;
+    width: 100%;
+  }
+  /* ---------------------------------------------------
+      CONTENT STYLE
+  ----------------------------------------------------- */
+  .fa-warning::before {
+    content: "\f06a";
+  }
+  #content {
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow-x: hidden;
+  }
+  
+    #content.active {
+      width: 100%;
+    }
+  .page_title {
+    background: white;
+    padding: 15px;
+    text-transform: uppercase;
+    font-family: roboto;
+  }
+  .page_title h2{
+    font-size:24px;
+    font-family:roboto;
+    margin:0;
+  }
+  .fa-close:before {
+    content: "\f00d";
+  }
+  .ui-datepicker{
+    top:unset !important;
+  }
+  .required{
+    color:red;
+  }
+  .input_error{
+    border:1px solid red !important;
+  }
+  .ui-messages-summary{
+    display:block;
+  }
+  /**/
+  .template_tag {
+    display: none;
+  }
+  
+  .post_tag {
+    cursor: pointer;
+  }
+  
+  .g_question_box {
+    position: relative;
+    padding-right: 50px;
+    padding-bottom: 10px;
+  }
+  
+  .post_tag:hover {
+    background: #ffcc07;
+  }
+  
+  #tag_area {
+    padding: 0;
+    font-size: 13px;
+  }
+  
+  .post_body .nav {
+  }
+  
+  .post_body .nav li.nav-item {
+    padding: 0;
+  }
+  
+  .post_body .nav li.nav-item a {
+    border-radius: 0;
+    color: #000;
+    padding: 15px 20px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .post_body .nav li.nav-item a.active {
+    background: #dcfeff;
+    border: 1px solid #dee2e6;
+    border-bottom: transparent;
+  }
+  .tile_count .tile_stats_count .count {
+    font-size: 30px;
+    line-height: 47px;
+    font-weight: 600;
+  }
+  
+  .tile_count .tile_stats_count span {
+    font-size: 12px;
+  }
+  
+  .tile_count .tile_stats_count .count_bottom i {
+    width: 12px;
+  }
+  
+  .tile_count .tile_stats_count:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    height: 80%;
+    border-left: 2px solid #ADB2B5;
+    margin-top: 10px;
+  }
+  
+  .tile_count .tile_stats_count:first-child:before {
+    display: none;
+  }
+  
+  .red {
+    color: #E74C3C;
+  }
+  
+  .green {
+    color: #1ABB9C;
+  }
+  
+  .tile_count {
+    margin: 0;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    color: #73879C;
+  }
+  
+    .tile_count .tile_stats_count span {
+      font-size: 12px;
+    }
+  .badge.top-right {
+    position: absolute;
+    top: -8px;
+    z-index: 1;
+  }
+  .col-green{
+    background: darkseagreen !important;
+}
+  @media (min-width: 768px) {
+    .tile_count .tile_stats_count .count {
+      font-size: 40px;
+    }
+  
+    .tile_count .tile_stats_count span {
+      font-size: 13px;
+    }
+  
+    .tile_count .tile_stats_count span {
+      font-size: 13px;
+    }
+  }
+  

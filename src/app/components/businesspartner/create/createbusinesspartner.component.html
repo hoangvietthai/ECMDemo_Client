@@ -1,0 +1,168 @@
+<form [formGroup]="formGroup" (ngSubmit)="onCreate()">
+    <div class="row form_create">
+        <div class="col-md-6">
+            <p-fieldset legend="Thông tin chung">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Tên gọi
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" placeholder="Tên" 
+                            formControlName="Name" [ngClass]="{ 'is-invalid': submitted && f.Name.errors }"
+                            required>
+                        <div *ngIf="submitted && f.Name.errors" class="invalid-feedback">
+                            <div *ngIf="f.Name.errors.required">Trường này bắt buộc nhập</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Người chịu trách nhiệm
+                    </div>
+                    <div class="col-md-8">
+                        <p-dropdown [options]="users" [autoWidth]="false"
+                            [style]="{width: '100%'}" appendTo="body" formControlName="ResponsibleUserId"
+                            [ngClass]="{ 'is-invalid': submitted && f.ResponsibleUserId.errors }"></p-dropdown>
+                        <div *ngIf="submitted && f.ResponsibleUserId.errors" class="invalid-feedback">
+                            <div *ngIf="f.ResponsibleUserId.errors.required">Trường này bắt buộc nhập</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Dạng đối tác
+                    </div>
+                    <div class="col-md-8">
+                        <p-dropdown [options]="dm_partnertypes" 
+                            [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"
+                            formControlName="BusinessTypeId"
+                            [ngClass]="{ 'is-invalid': submitted && f.BusinessTypeId.errors }"></p-dropdown>
+                        <div *ngIf="submitted && f.BusinessTypeId.errors" class="invalid-feedback">
+                            <div *ngIf="f.BusinessTypeId.errors.required">Trường này bắt buộc nhập</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Mã số thuế
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control"
+                            formControlName="TaxCode" [ngClass]="{ 'is-invalid': submitted && f.TaxCode.errors }">
+                        <div *ngIf="submitted && f.TaxCode.errors" class="invalid-feedback">
+                            <div *ngIf="f.TaxCode.errors.required">Trường này bắt buộc nhập</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Mã chi nhánh
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control"
+                            formControlName="AgencyCode" [ngClass]="{ 'is-invalid': submitted && f.AgencyCode.errors }">
+                        <div *ngIf="submitted && f.AgencyCode.errors" class="invalid-feedback">
+                            <div *ngIf="f.AgencyCode.errors.required">Trường này bắt buộc nhập</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Mã doanh nghiệp
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" 
+                        formControlName="BusinessCode" [ngClass]="{ 'is-invalid': submitted && f.BusinessCode.errors }"
+                        >
+                        <div *ngIf="submitted && f.BusinessCode.errors" class="invalid-feedback">
+                            <div *ngIf="f.BusinessCode.errors.required">Trường này bắt buộc nhập</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Số đăng ký kinh doanh
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" 
+                        formControlName="BusinessRegisteredCode" [ngClass]="{ 'is-invalid': submitted && f.BusinessRegisteredCode.errors }"
+                        >
+                        <div *ngIf="submitted && f.BusinessRegisteredCode.errors" class="invalid-feedback">
+                            <div *ngIf="f.BusinessRegisteredCode.errors.required">Trường này bắt buộc nhập</div>
+                        </div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+        <div class="col-md-6">
+            <p-fieldset legend="Địa chỉ & liên hệ">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Địa chỉ đăng ký
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" formControlName="RegisteredAddress" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Địa chỉ thực tế
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" 
+                        formControlName="ActualAddress" 
+                        >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Fax
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" formControlName="Fax" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Email
+                    </div>
+                    <div class="col-md-8">
+                        <input type="email" class="form-control" formControlName="Email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Điện thoại
+                    </div>
+                    <div class="col-md-8">
+                        <input type="email" class="form-control" formControlName="PhoneNumber" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Website
+                    </div>
+                    <div class="col-md-8">
+                        <input type="email" class="form-control" formControlName="Website">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Ghi chú thêm
+                    </div>
+                    <div class="col-md-8">
+                        <textarea class="form-control" rows="3" formControlName="Note"></textarea>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group row" style="text-align: right;margin-top: 20px">
+                <div class="col-md-12"> <button type="button" pButton icon="pi pi-check" (click)="onCreate()"
+                        label="Lưu lại" class="ui-button-success"></button></div>
+
+
+            </div>
+        </div>
+    </div>
+</form>

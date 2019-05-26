@@ -1,0 +1,32 @@
+<p-listbox [options]="users" [(ngModel)]="selectedUsers" multiple="multiple" checkbox="checkbox" filter="filter"
+    optionLabel="label" [style]="{width:'100%'}" (onChange)="ChangeSelections($event)">
+    <p-header>
+        <p-toolbar>
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" icon="pi pi-plus" (click)="openCreateUser()"></button>
+            </div>
+        </p-toolbar>
+    </p-header>
+    <p-footer>
+        <button pButton style="width:100%" type="button" iconPos="bottom" icon="pi pi-angle-down"
+            (click)="AddSelections()"></button>
+        <p-fieldset legend="Danh sách các user đã chọn">
+            <div *ngIf="selectedUsers.length==0">Chưa user nào được chọn</div>
+            <div *ngIf="selectedUsers.length>0">
+                <p-chips [(ngModel)]="selections_strings" (onAdd)="OnAdd($event)" (onRemove)="OnRemove($event)">
+                </p-chips>
+            </div>
+        </p-fieldset>
+
+
+    </p-footer>
+</p-listbox>
+<br />
+<div class="form-group row">
+    <div class="col-md-12" style="text-align: right">
+        <button type="button" pButton icon="pi pi-check" (click)="save()" label="Lưu lại"
+            class="ui-button-success"></button>
+        <button type="button" pButton icon="fas fa-times" (click)="close()" label="Hủy bỏ"
+            class="ui-button-danger"></button>
+    </div>
+</div>

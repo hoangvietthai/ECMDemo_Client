@@ -1,0 +1,9 @@
+<div #tree>
+    <p-tree [value]="dirs" selectionMode="single" [(selection)]="selectedDir" (onNodeSelect)="nodeSelect($event)"
+        (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+</div>
+<div class="d-flex justify-content-between">
+    <label *ngIf="selectedDir" >Thư mục đã chọn: {{selectedDir.node.label}}</label>
+    <label *ngIf="!selectedDir" >Bạn chưa chọn thư mục nào</label>
+    <button  type="button" pButton icon="pi pi-check" (click)="save()" label="Đồng ý" class="ui-button-success"></button>
+</div>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ClientApp</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+  <script src="assets/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+</head>
+<body>
+  <app-root></app-root>
+  <script type="text/javascript">
+    $(function () {
+      
+      $.getScript("assets/js/jquery.mCustomScrollbar.concat.min.js")
+        .done(function (script, textStatus) {
+          $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+          });
+
+          $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+          });
+        })
+        .fail(function (jqxhr, settings, exception) {
+
+        });
+
+    });
+  </script>
+</body>
+</html>

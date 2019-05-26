@@ -1,0 +1,180 @@
+<div>
+    <p-breadcrumb [model]="BreadcrumbItems" [home]="BreadcrumbHome"></p-breadcrumb>
+    <div class="page_title">
+        <h2>Danh mục phòng ban</h2>
+    </div>
+    <p-toast></p-toast>
+    <div class="container-fluid">
+        <div>
+            <p-table #dt [value]="departments" [paginator]="true" [rows]="10" [columns]="cols"
+                [(selection)]="selectedDepartment" dataKey="DepartmentId" selectionMode="single">
+                <ng-template pTemplate="caption">
+                    <div style="display:flex">
+                        <div>
+                            <button pButton type="button" icon="fas fa-plus-circle" label="Tạo mới"
+                                (click)="openCreate()"></button>
+                            <button type="button" pButton icon="fas fa-file-excel" label="Xuất dữ liệu" iconPos="left"
+                                (click)="dt.exportCSV()" class="ui-button-warning"></button>
+                            <button pButton type="button" icon="fas fa-trash" label="Xóa nhiều" (click)="deleteItems()"
+                                class="ui-button-danger" *ngIf="selectedStudent&&selectedStudent.length>1"></button>
+                        </div>
+                        <div style="flex: 1;text-align: right;">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input type="text" pInputText size="50" placeholder="Tìm trong bảng"
+                                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 3em">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th style="width: 4em">STT</th>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                        </th>
+                        <th style="width:8em"></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input *ngSwitchCase="'Name'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'Leader'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <div *ngSwitchCase="'Description'"></div>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                    <tr [pSelectableRow]="item">
+                        <td>
+                            <p-tableCheckbox [value]="item"></p-tableCheckbox>
+                        </td>
+                        <td>{{rowIndex+1}}</td>
+                        <td>{{item.Name}}</td>
+                        <td>{{item.Leader}}</td>
+                        <td>{{item.Description}}</td>
+                        <td>
+        
+                            <button pButton icon="fa fa-edit" (click)="openUpdate(item)"
+                                class="ui-button-warning"></button>
+                            <button pButton icon="fa fa-trash" (click)="ConfirmDelete(item)"
+                                class="ui-button-danger"></button>
+                        </td>
+                    </tr>
+
+                </ng-template>
+            </p-table>
+        </div>
+        <p-dialog header="Chỉnh sửa thông tin" [(visible)]="displayUpdateDialog" [modal]="true" [responsive]="true"
+            [style]="{width: '500px', minWidth: '200px'}" [maximizable]="true" appendTo="body">
+            <div *ngIf="updateModel">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Trực thuộc phòng ban
+                    </div>
+                    <div class="col-md-8">
+                        <p-dropdown [options]="dm_departments" [(ngModel)]="updateModel.ParentId" [autoWidth]="false"
+                            [style]="{width: '100%'}"></p-dropdown>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Tên phòng ban
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" [(ngModel)]="updateModel.Name">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Trưởng phòng ban
+                    </div>
+                    <div class="col-md-8">
+                        <p-dropdown [options]="dm_users" [(ngModel)]="updateModel.LeaderId" [autoWidth]="false"
+                            [style]="{width: '85%'}"></p-dropdown>
+                        <div style="text-align:right;float: right">
+                            <button type="button" pButton icon="fas fa-plus-circle" (click)="openCreateUser()"
+                                class="ui-button-success"></button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="form-group row" *ngIf="!updateModel.LeaderId">
+                    <div class="col-md-12">
+                        <span style="font-style: italic">Phòng ban này chưa có trưởng phòng. Để thêm trưởng phòng bạn
+                            có thể chọn từ danh sách các
+                            nhân viên thuộc phòng ban hoặc tạo mới.</span><br />
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Mô tả
+                    </div>
+                    <div class="col-md-8">
+                        <input type="password" class="form-control" [(ngModel)]="updateModel.Description">
+                    </div>
+                </div>
+
+            </div>
+            <p-footer>
+                <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
+                    class="ui-button-success"></button>
+                <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+                    class="ui-button-danger"></button>
+            </p-footer>
+        </p-dialog>
+        <p-dialog header="Tạo mới phòng ban" [(visible)]="displayCreateDialog" [modal]="true" [responsive]="true"
+            [style]="{width: '500px', minWidth: '200px'}" [maximizable]="true" appendTo="body">
+            <div *ngIf="createModel">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Tên phòng ban
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" [(ngModel)]="createModel.Name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Trực thuộc
+                    </div>
+                    <div class="col-md-8">
+                        <p-dropdown [options]="dm_departments" [(ngModel)]="createModel.ParentId" [autoWidth]="false"
+                            [style]="{width: '100%'}"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Mô tả thêm
+                    </div>
+                    <div class="col-md-8">
+                        <textarea pInputTextarea [(ngModel)]="createModel.Description" class="form-control"></textarea>
+                        <!-- <input type="text" class="form-control" [(ngModel)]="createModel.Description"> -->
+                    </div>
+                </div>
+            </div>
+            <p-footer>
+                <button type="button" pButton icon="pi pi-check" (click)="create()" label="Lưu lại"
+                    class="ui-button-success"></button>
+                <button type="button" pButton icon="fas fa-times" (click)="displayCreateDialog=false" label="Hủy bỏ"
+                    class="ui-button-danger"></button>
+            </p-footer>
+        </p-dialog>
+       
+        <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+    </div>
+
+</div>

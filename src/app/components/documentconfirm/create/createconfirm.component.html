@@ -1,0 +1,65 @@
+<p-toast></p-toast>
+<div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Liên kết tài liệu
+        </div>
+        <div class="col-md-8">
+            <a href="{{'/van-ban-di/chi-tiet/'+createModel.RelatedDocumentId}}" target="blank">{{config.data.Name}}</a>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Việc cần làm
+        </div>
+        <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="createModel.Name">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+
+            Mô tả
+        </div>
+        <div class="col-md-8">
+            <textarea class="form-control" [(ngModel)]="createModel.Description"></textarea>
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Người phê duyệt
+
+        </div>
+        <div class="col-md-8">
+            <p-dropdown [options]="dm_users" [(ngModel)]="createModel.UserId"
+            [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Mức độ ưu tiên
+        </div>
+        <div class="col-md-8">
+            <p-dropdown [options]="dm_priories" [(ngModel)]="createModel.PriorityLevel" [autoWidth]="false"
+                [style]="{width: '100%'}"></p-dropdown>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Thời hạn xử lý
+        </div>
+        <div class="col-md-8">
+            <p-calendar [(ngModel)]="createModel.FinishedOnDate" dateFormat="dd/mm/yy" [style]="{width: '100%'}">
+            </p-calendar>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12" style="text-align: right">
+            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Lưu lại"
+                class="ui-button-success"></button>
+            <button type="button" pButton icon="fas fa-times" (click)="close()" label="Hủy bỏ"
+                class="ui-button-danger"></button>
+        </div>
+    </div>
+</div>

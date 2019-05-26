@@ -1,0 +1,442 @@
+<div class="container" *ngIf="user.UserRole>1">
+    <div class="row">
+        <div class="col-6">
+            <p-fieldset legend="Tài liệu phòng ban">
+                <div class="number_area">
+                    <div class="number_box" (click)="OpenDoc(private_documents)">
+                        <div class="number_box_index">{{private_documents.length}}</div>
+                        <div class="number_box_info">Private</div>
+                    </div>
+                    <div class="number_box" (click)="OpenDoc(public_documents)">
+                        <div class="number_box_index">{{public_documents.length}}</div>
+                        <div class="number_box_info">Public</div>
+                    </div>
+                </div>
+
+            </p-fieldset>
+        </div>
+        <div class="col-6">
+            <p-fieldset legend="Nhiệm vụ đi">
+                <div class="number_area">
+                    <div class="number_box" (click)="OpenTasks(send_process_tasks)">
+                        <div class="number_box_index">{{send_process_tasks.length}}</div>
+                        <div class="number_box_info">Trong quá trình</div>
+                    </div>
+                    <div class="number_box" (click)="OpenTasks(send_expired_tasks)">
+                        <div class="number_box_index">{{send_expired_tasks.length}}</div>
+                        <div class="number_box_info">Quá hạn</div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+        <div class="col-6">
+            <p-fieldset legend="Nhiệm vụ đến">
+                <div class="number_area">
+                    <div class="number_box" (click)="OpenTasks(receive_process_tasks)">
+                        <div class="number_box_index">{{receive_process_tasks.length}}</div>
+                        <div class="number_box_info">Trong quá trình</div>
+                    </div>
+                    <div class="number_box" (click)="OpenTasks(receive_expired_tasks)">
+                        <div class="number_box_index">{{receive_expired_tasks.length}}</div>
+                        <div class="number_box_info">Quá hạn</div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+        <div class="col-6">
+            <p-fieldset legend="Nhiệm vụ nội bộ">
+                <div class="number_area">
+                    <div class="number_box" (click)="OpenTasks(interval_process_tasks)">
+                        <div class="number_box_index">{{interval_process_tasks.length}}</div>
+                        <div class="number_box_info">Trong quá trình</div>
+                    </div>
+                    <div class="number_box" (click)="OpenTasks(interval_expired_tasks)">
+                        <div class="number_box_index">{{interval_expired_tasks.length}}</div>
+                        <div class="number_box_info">Đã quá hạn</div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+        <div class="col-6">
+            <p-fieldset legend="Nhiệm vụ của tôi">
+                <div class="number_area">
+                    <div class="number_box" (click)="OpenTasks(mytasks)">
+                        <div class="number_box_index">{{mytasks.length}}</div>
+                        <div class="number_box_info">Trong quá trình</div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" *ngIf="user.UserRole==1">
+    <div class="row tile_count">
+        <div class="col-md-5 tile_stats_count" style="padding:0">
+            <div class="count">Giám Đốc</div>
+            <div class="teacher">
+                Chức vụ: Giám đốc
+            </div>
+        </div>
+        <div class="col-md-7" style="padding:0">
+            <div class="row">
+                <div class="col-md-3 tile_stats_count">
+                    <span class="count_top">
+                        <i class="fa fa-user"></i>Tổng số tệp
+                    </span>
+                    <div class="count">512</div>
+                </div>
+
+                <div class="col-md-3 tile_stats_count">
+                    <span class="count_top">
+                        <i class="fas fa-list-ol"></i>
+                        Văn bản đi
+                    </span>
+                    <div class="count">231</div>
+
+                </div>
+                <div class="col-md-3 tile_stats_count">
+                    <span class="count_top">
+                        <i class="fas fa-list-ol"></i>
+                        Văn bản đến
+                    </span>
+                    <div class="count">254</div>
+
+                </div>
+                <div class="col-md-3 tile_stats_count">
+                    <span class="count_top">
+                        <i class="fas fa-list-ol"></i>
+                        Văn bản nội bộ
+                    </span>
+                    <div class="count">643</div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <br />
+    <div class="row">
+
+        <div class="col-8">
+            <p-fieldset legend="Các tài liệu cần phê duyệt">
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <td>Loại văn bản</td>
+                            <td>Trong quá trình</td>
+                            <td>Đã quá hạn</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Văn bản đi</td>
+                            <td>
+                                <button (click)="OpenTasks(send_process_tasks)" class="btn btn-link">
+                                    {{send_process_tasks.length}}
+                                </button>
+
+                            </td>
+                            <td>
+                                <button (click)="OpenTasks(send_expired_tasks)" class="btn btn-link">
+                                    {{send_expired_tasks.length}}
+                                </button>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Văn bản đến</td>
+                            <td>
+                                <button (click)="OpenTasks(receive_process_tasks)" class="btn btn-link">
+                                    {{receive_process_tasks.length}}
+                                </button>
+
+                            </td>
+                            <td>
+                                <button (click)="OpenTasks(receive_process_tasks)" class="btn btn-link">
+                                    {{receive_process_tasks.length}}
+                                </button>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Văn bản nội bộ</td>
+                            <td>
+                                <button (click)="OpenTasks(interval_process_tasks)" class="btn btn-link">
+                                    {{interval_process_tasks.length}}
+                                </button>
+
+                            </td>
+                            <td>
+                                <button (click)="OpenTasks(interval_process_tasks)" class="btn btn-link">
+                                    {{interval_process_tasks.length}}
+                                </button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </p-fieldset>
+        </div>
+        <div class="col-4">
+            <p-fieldset legend="Nhiệm vụ đã giao cần xử lý">
+                <div class="number_area">
+                    <div class="number_box" (click)="OpenTasks(mytasks)">
+                        <div class="number_box_index">{{mytasks.length}}</div>
+                        <div class="number_box_info">Chờ phản hồi</div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <p-fieldset legend="Các văn bản đang chờ xử lý">
+                <div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>
+                                    STT
+                                </td>
+                                <td>
+                                    Trạng thái
+                                </td>
+                                <td>
+                                    Ngày tạo
+                                </td>
+
+                                <td style="width:40px">
+
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of pendingtasks;let i=index">
+                                <td>{{i+1}}</td>
+                                <td>
+                                    {{GetTaskName(item.TaskType,item.Status)}}
+                                </td>
+
+                                <td>
+                                    {{item.CreatedOnDate | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    <button pButton icon="fas fa-eye" class="ui-button-success"
+                                    (click)="ViewTaskDetail1(item.TaskType,item.RelatedId)"  
+                                    ></button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </p-fieldset>
+        </div>
+        <div class="col-7">
+            <p-fieldset legend="Các văn bản đã quá hạn nhưng chưa xử lý">
+                <div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>
+                                    Tên nhiệm vụ
+                                </td>
+                                <td>
+                                    Người tạo
+                                </td>
+                                <td>
+                                    Hạn
+                                </td>
+                                <td>
+                                    Loại tài liệu
+                                </td>
+                                <td style="width:40px">
+
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of expiredtasks;let i=index">
+                                <td>
+                                    {{item.Title}}
+                                </td>
+                                <td>
+                                    {{item.CreatedByUser}}
+                                </td>
+                                <td>
+                                    {{item.DeadLine | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{item.ModuleId}}
+                                </td>
+                                <td>
+                                    <button pButton icon="fas fa-eye" class="ui-button-success"
+                                    (click)="ViewTaskDetail1(item.TaskType,item.RelatedDocumentId)"
+                                    ></button>
+                                </td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </p-fieldset>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Danh sách nhiệm vụ" [(visible)]="displayTaskDialog" [modal]="true" [responsive]="true"
+    [style]="{width: '700px', minWidth: '200px'}" appendTo="body" (onHide)="HideTaskDialog()">
+    <div *ngIf="selected_tasks">
+        <p-table [value]="selected_tasks" selectionMode="single" [(selection)]="selectedTask" dataKey="MessageId">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:50px;"></th>
+                    <th>Nhiệm vụ</th>
+                    <th>Tác giả</th>
+                    <th>Ngày đến hạn</th>
+                    <th>Trạng thái</th>
+                    <th style="width:50px;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                <tr [pSelectableRow]="item" [ngClass]="(item.Status==0)?'col-notseen':'col-seen'">
+                    <td>{{rowIndex+1}}</td>
+                    <td>{{item.Title}}</td>
+                    <td>{{item.Author}}</td>
+                    <td>{{item.Deadline | date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.Status==1?'Đã đọc':'Chưa đọc'}}</td>
+                    <td> <button pButton icon="fas fa-eye" (click)="ViewTaskDetail(item)"
+                            class="ui-button-success"></button></td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
+            class="ui-button-success"></button>
+        <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+            class="ui-button-danger"></button>
+    </p-footer>
+</p-dialog>
+<p-dialog header="Danh sách tài liệu" [(visible)]="displayDocDialog" [modal]="true" [responsive]="true"
+    [style]="{width: '700px', minWidth: '200px'}" appendTo="body">
+    <div *ngIf="selected_docs">
+        <p-table #dt [value]="selected_docs" [paginator]="true" [rows]="10" [columns]="cols" dataKey="DocumentId"
+            [(selection)]="selectedDoc" selectionMode="single">
+
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width:70px">STT</th>
+                    <th>Tên</th>
+                    <th>Tác giả</th>
+                    <th>Ngày tạo</th>
+                    <th>Lần sửa cuối</th>
+                    <th style="width: 70px"></th>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                <tr [pSelectableRow]="item">
+                    <td>{{rowIndex+1}}</td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.CreatedByUserName}}</td>
+                    <td>{{item.CreatedOnDate | date}}</td>
+                    <td>{{item.LastModifiedOnDate | date}}</td>
+                    <td> <button pButton icon="far fa-eye" class="ui-button-success"
+                            (click)="OpenDetail(item)"></button></td>
+                </tr>
+
+            </ng-template>
+        </p-table>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
+            class="ui-button-success"></button>
+        <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+            class="ui-button-danger"></button>
+    </p-footer>
+</p-dialog>
+<p-dialog header="Xem thông tin" [(visible)]="displayDocDetail" [modal]="true" [responsive]="true"
+    [style]="{width: '500px', minWidth: '200px'}" [maximizable]="true" appendTo="body">
+    <div *ngIf="selectedDoc">
+        <div class="form-group">
+            <div style="
+    display: flex;
+    padding: 10px 0;
+    padding-right: 15px;
+    border-bottom: 1px dashed;
+">
+
+                <div style="margin-right:10px">Tệp đính kèm:</div>
+                <div style="cursor:pointer;color:#07C">
+                    <i class="fas fa-paperclip" style="margin-right:5px"></i>
+                    <a style="color:inherit !important" href="{{selectedDoc.FileUrl}}" target="blank">Xem tại
+                        đây</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-4">
+                    Tên
+                </div>
+                <div class="col-8">
+                    {{selectedDoc.Name}}
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-4">
+                    Mô tả
+                </div>
+                <div class="col-8">
+                    {{selectedDoc.Description}}
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-4">
+                    Thể loại
+                </div>
+                <div class="col-8">
+                    {{getCateString(selectedDoc.FileCates)}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-4">
+                    Ngày tạo
+                </div>
+                <div class="col-8">
+                    {{selectedDoc.CreatedOnDate | date: 'HH:mm, dd/MM/yyyy'}}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-4">
+                    Lần sửa cuối
+                </div>
+                <div class="col-8">
+                    {{selectedDoc.LastModifiedOnDate | date: 'HH:mm, dd/MM/yyyy'}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <p-footer>
+        <button type="button" pButton icon="fas fa-times" (click)="displayDetail=false" label="Đóng"
+            class="ui-button-info"></button>
+    </p-footer>
+</p-dialog>

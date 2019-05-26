@@ -1,0 +1,61 @@
+export interface InternalDocumentDisplayModel{
+    InternalDocumentId?:number;
+    Name?:string;
+    ResignedNumber?:number;
+    ResignedOnDate?:Date;
+    WrittenByUserFullName?:string;
+    CreatedOnDate?:Date;
+    DocumentStatusId?:number;
+    DocumentProcessId?:number;
+}
+export interface InternalDocumentModel{
+    InternalDocumentId?:number;
+    Name?:string;
+    Summary?:string;
+    DirectoryId?:number;
+    CategoryId?:number;
+    SecretLevel?:number;
+    ProjectId?:number;
+    DepartmentId?:number;
+    DocumentStatusId?:number;
+    WrittenByUserId?:number;
+    ResponsibleUserId?:number;
+    CreatedByUserId?:number;
+    CreatedOnDate?:Date;
+    LastModifiedByUserId?:number;
+    LastModifiedOnDate?:Date;
+    IsDelete?:boolean;
+    ResignedNumber?:number;
+    ResignedOnDate?:Date;
+    AttachedFileUrl?:string;
+}
+export interface InternalDocumentCreateModel{
+    Name?:string;
+    Summary?:string;
+    DirectoryId?:number;
+    CategoryId?:number;
+    SecretLevel?:number;
+    ProjectId?:number;
+    DepartmentId?:number;
+    DocumentStatusId?:number;
+    WrittenByUserId?:number;
+    ResponsibleUserId?:number;
+    CreatedByUserId?:number;
+    AttachedFileUrl?:string;
+}
+export interface InternalDocumentUpdateModel{
+    Name?:string;
+    Summary?:string;
+    DirectoryId?:number;
+    CategoryId?:number;
+    SecretLevel?:number;
+    ProjectId?:number;
+    DepartmentId?:number;
+    DocumentStatusId?:number;
+    WrittenByUserId?:number;
+    ResponsibleUserId?:number;
+    LastModifiedByUserId?:number;
+    ResignedNumber?:number;
+    ResignedOnDate?:Date;
+    AttachedFileUrl?:string;
+}

@@ -1,0 +1,240 @@
+<div>
+    <p-toast></p-toast>
+    <p-breadcrumb [model]="BreadcrumbItems" [home]="BreadcrumbHome"></p-breadcrumb>
+    <div class="page_title">
+        <h2>Truy vấn tài liệu</h2>
+    </div>
+    <div class="container-fluid">
+        <div class="card" style="max-width: 1000px">
+            <div class="card-body">
+                <h4 class="card-title">Các tham số truy vấn</h4>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <div class="row">
+                            <div class="col-md-5">
+                                Phòng ban
+                            </div>
+                            <div class="col-md-7">
+                                <p-dropdown [options]="dm_departments" [(ngModel)]="mainModel.DepartmentId"
+                                    [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div class="row">
+                            <div class="col-md-5">
+                                Thư mục
+                            </div>
+                            <div class="col-md-7">
+                                <p-dropdown [options]="dm_directories" [(ngModel)]="mainModel.DirectoryId"
+                                    [autoWidth]="false" [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div class="row">
+                            <div class="col-md-5">
+                                Nhóm thể loại tài liệu
+                            </div>
+                            <div class="col-md-7">
+                                <p-dropdown [options]="dm_groupcates" [autoWidth]="false" [style]="{width: '100%'}"
+                                    (onChange)="GroupCateChange($event)" appendTo="body"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div class="row">
+                            <div class="col-md-5">
+                                Thể loại tài liệu
+                            </div>
+                            <div class="col-md-7">
+                                <p-dropdown [options]="dm_cates" [(ngModel)]="mainModel.CategoryId" [autoWidth]="false"
+                                    [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div class="row">
+                            <div class="col-md-5">
+                                Tác giả
+                            </div>
+                            <div class="col-md-7">
+                                <p-dropdown [options]="dm_users" [(ngModel)]="mainModel.UserId" [autoWidth]="false"
+                                    [style]="{width: '100%'}" appendTo="body"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <div class="row">
+                            <div class="col-md-5">
+                                Thời gian văn bản được tạo
+                            </div>
+                            <div class="col-md-7">
+
+                                <p-calendar dateFormat="dd/mm/yy" [(ngModel)]="rangeDates" selectionMode="range"
+                                    [readonlyInput]="true" (onSelect)="DateRangeChange($event)"
+                                    [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" placeholder="Tên văn bản"
+                                    [(ngModel)]="mainModel.Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <button pButton type="button" label="Bắt đầu tìm kiếm" icon="pi pi-search"
+                                    (click)="getResult()"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div *ngIf="docs" style="max-width:1000px">
+            <div *ngIf="resultString">
+                Có <span style="color:red;font-size:200%">{{docs.length}}</span> kết quả phù hợp
+            </div>
+            <div *ngIf="docs&&docs.length>0">
+
+            </div>
+            <p-table #dt [value]="docs" [paginator]="true" [rows]="10" [columns]="cols" dataKey="DocumentId"
+                [(selection)]="selectedFile" selectionMode="single">
+
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width:70px">STT</th>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                        </th>
+                        <th style="width: 70px"></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input *ngSwitchCase="'Name'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'LastModifiedOnDate'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'CreatedByUserName'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'CreatedOnDate'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                    <tr [pSelectableRow]="item">
+                        <td>{{rowIndex+1}}</td>
+                        <td>{{item.Name}}</td>
+                        <td>{{item.CreatedByUserName}}</td>
+                        <td>{{item.CreatedOnDate | date}}</td>
+                        <td>{{item.LastModifiedOnDate | date}}</td>
+                        <td> <button pButton icon="far fa-eye" class="ui-button-success"
+                                (click)="OpenDetail(item)"></button></td>
+                    </tr>
+
+                </ng-template>
+            </p-table>
+        </div>
+        <p-dialog header="Xem thông tin" [(visible)]="displayDetail" [modal]="true" [responsive]="true"
+            [style]="{width: '500px', minWidth: '200px'}" [maximizable]="true" appendTo="body">
+            <div *ngIf="selectedFile">
+                <div class="form-group">
+                    <div style="
+                display: flex;
+                padding: 10px 0;
+                padding-right: 15px;
+                border-bottom: 1px dashed;
+            ">
+
+                        <div style="margin-right:10px">Tệp đính kèm:</div>
+                        <div style="cursor:pointer;color:#07C">
+                            <i class="fas fa-paperclip" style="margin-right:5px"></i>
+                            <a style="color:inherit !important" href="{{selectedFile.FileUrl}}" target="blank">Xem tại
+                                đây</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            Tên
+                        </div>
+                        <div class="col-8">
+                            {{selectedFile.Name}}
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            Mô tả
+                        </div>
+                        <div class="col-8">
+                            {{selectedFile.Description}}
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            Thể loại
+                        </div>
+                        <div class="col-8">
+                            {{getCateString(selectedFile.FileCates)}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            Ngày tạo
+                        </div>
+                        <div class="col-8">
+                            {{selectedFile.CreatedOnDate | date: 'HH:mm, dd/MM/yyyy'}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            Lần sửa cuối
+                        </div>
+                        <div class="col-8">
+                            {{selectedFile.LastModifiedOnDate | date: 'HH:mm, dd/MM/yyyy'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <p-footer>
+                <button type="button" pButton icon="fas fa-times" (click)="displayDetail=false" label="Đóng"
+                    class="ui-button-info"></button>
+            </p-footer>
+        </p-dialog>
+
+    </div>
+
+
+</div>

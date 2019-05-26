@@ -1,0 +1,104 @@
+<div>
+    <p-breadcrumb [model]="BreadcrumbItems" [home]="BreadcrumbHome"></p-breadcrumb>
+    <div class="page_title">
+        <h2>Danh mục thể loại tài liệu</h2>
+    </div>
+    <p-toast></p-toast>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <div *ngIf="activeGroup">
+                    Nhóm thể loại đang được áp dụng: <p-dropdown [disabled]="!checked" [options]="dm_groups"
+                        [(ngModel)]="activeGroup.DocumentCateGroupId" [autoWidth]="true" appendTo="body"
+                        (onChange)="ChangeActive($event)"></p-dropdown>
+                        &nbsp;
+                    <p-toggleButton [(ngModel)]="checked" onLabel="Thay đổi" offLabel="Khóa"
+                        (onChange)="Unlock($event)"></p-toggleButton>
+                </div>
+                <br />
+                <p-treeTable [value]="group_nodes" [columns]="cols" selectionMode="single" [(selection)]="selectedNode"
+                    (onNodeSelect)="nodeSelect($event)">
+                    <ng-template pTemplate="caption">
+                        <div style="display:flex">
+                            <div>
+                                <button pButton type="button" icon="fas fa-plus-circle" label="Tạo mới"
+                                    (click)="openCreate()"></button>
+                                <button pButton type="button" icon="fas fa-plus-circle" class="ui-button-warning"
+                                    label="Chỉnh sửa" (click)="openUpdate()" *ngIf="selectedNode"></button>
+                                <button pButton type="button" icon="fas fa-trash" label="Xóa" (click)="deleteItem()"
+                                    class="ui-button-danger" *ngIf="selectedNode"></button>
+                            </div>
+
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+                        <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+                            <td *ngFor="let col of columns; let i = index">
+                                <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                                {{rowData.Name}}
+                            </td>
+                        </tr>
+
+                    </ng-template>
+                </p-treeTable>
+            </div>
+            <div class="col-6">
+
+            </div>
+
+        </div>
+        <p-dialog header="Sửa thông tin thể loại" [(visible)]="displayUpdateDialog" [modal]="true" [responsive]="true"
+            [style]="{width: '500px', minWidth: '200px'}" appendTo="body">
+            <div *ngIf="updateModel">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Tên thể loại
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" [(ngModel)]="updateModel.Name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Mô tả
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" [(ngModel)]="updateModel.Description">
+                    </div>
+                </div>
+            </div>
+            <p-footer>
+                <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
+                    class="ui-button-success"></button>
+                <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+                    class="ui-button-danger"></button>
+            </p-footer>
+        </p-dialog>
+        <p-dialog header="Sửa thông tin nhóm thể loại" [(visible)]="displayUpdateDialog1" [modal]="true"
+            [responsive]="true" [style]="{width: '500px', minWidth: '200px'}" appendTo="body">
+            <div *ngIf="newGroupName">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Tên nhóm thể loại
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" [(ngModel)]="newGroupName">
+                    </div>
+                </div>
+            </div>
+            <p-footer>
+                <button type="button" pButton icon="pi pi-check" (click)="update1()" label="Lưu lại"
+                    class="ui-button-success"></button>
+                <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog1=false" label="Hủy bỏ"
+                    class="ui-button-danger"></button>
+            </p-footer>
+        </p-dialog>
+        <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+    </div>
+
+</div>

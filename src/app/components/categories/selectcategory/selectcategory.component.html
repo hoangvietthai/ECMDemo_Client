@@ -1,0 +1,39 @@
+<p-listbox [options]="cates" [(ngModel)]="selectedCates" multiple="multiple" checkbox="checkbox" filter="filter"
+    optionLabel="label" [style]="{width:'100%'}" (onChange)="ChangeSelections($event)">
+    <p-header>
+        <p-toolbar>
+            <div class="ui-toolbar-group-left" *ngIf="currentGroupCate">
+                Nguồn: <span style="font-weight:bold;text-decoration: underline;cursor: pointer;" (click)="op.toggle($event)">{{currentGroupCate.Name}} <i class="fas fa-question-circle"></i></span>
+            </div>
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" icon="pi pi-plus" (click)="openCreateCate()"></button>
+            </div>
+        </p-toolbar>
+    </p-header>
+    <p-footer>
+        <button pButton style="width:100%" type="button" iconPos="bottom" icon="pi pi-angle-down"
+            (click)="AddSelections()"></button>
+        <p-fieldset legend="Danh sách thể loại đã chọn">
+            <div *ngIf="selectedCates.length==0">Chưa thể loại nào được chọn</div>
+            <div *ngIf="selectedCates.length>0">
+                <p-chips [(ngModel)]="selections_strings" (onAdd)="OnAdd($event)" (onRemove)="OnRemove($event)">
+                </p-chips>
+            </div>
+        </p-fieldset>
+
+
+    </p-footer>
+</p-listbox>
+<br />
+<div class="form-group row">
+    <div class="col-md-12" style="text-align: right">
+        <button type="button" pButton icon="pi pi-check" (click)="save()" label="Lưu lại"
+            class="ui-button-success"></button>
+        <button type="button" pButton icon="fas fa-times" (click)="close()" label="Hủy bỏ"
+            class="ui-button-danger"></button>
+    </div>
+</div>
+<p-overlayPanel #op [dismissable]="true" [showCloseIcon]="true" appendTo="body">
+        Nhóm thể loại hiện tại áp dụng cho toàn hệ thống, thực hiện bởi quản trị viên.<br/>
+         Bạn có thể thay đổi thiết lập này tại Chức năng <b>Danh mục hệ thống > Thể loại tài liệu</b>
+</p-overlayPanel>

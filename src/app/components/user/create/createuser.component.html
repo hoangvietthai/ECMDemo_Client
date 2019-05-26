@@ -1,0 +1,40 @@
+<div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Tên tài khoản
+        </div>
+        <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="createModel.UserName">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Tên mật khẩu
+        </div>
+        <div class="col-md-8">
+            <input type="password" class="form-control" [(ngModel)]="createModel.Password">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Tên đầy đủ
+        </div>
+        <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="createModel.FullName">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            Thuộc phòng ban
+        </div>
+        <div class="col-md-8">
+            <p-dropdown [options]="dm_departments" [(ngModel)]="createModel.DepartmentId" [autoWidth]="false" [style]="{width: '100%'}"></p-dropdown>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12" style="text-align: right">
+            <button type="button" pButton icon="pi pi-check" (click)="save()" label="Lưu lại" class="ui-button-success"></button>
+
+        </div>
+    </div>
+</div>
