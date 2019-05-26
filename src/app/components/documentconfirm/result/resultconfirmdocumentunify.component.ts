@@ -40,6 +40,8 @@ export class ResultDocConfirmComponent implements OnInit {
     uploadDataUrl: string = uploadDataUrl;
     isShowActions: boolean = true;
     dm_users: SelectItem[];
+    ds_users: SelectItem[];
+    Author: SelectItem;
     dm_partners: SelectItem[];
     InvokeUser: SelectItem;
     dm_priories: SelectItem[];
@@ -154,7 +156,18 @@ export class ResultDocConfirmComponent implements OnInit {
                             break;
                         }
                     }
-
+                    this._user.getAllBase().subscribe(res => {
+                        this.ds_users = [];
+                        if (res.Status == 1) {
+                            for (let i = 0; i < res.Data.length; i++) {
+                                this.ds_users.push({
+                                    label: res.Data[i].UserName,
+                                    value: res.Data[i].UserId
+                                });
+                            }
+                        }
+                        this.Author = this.ds_users.filter(u => u.value == this.mainModel.CreatedByUserId)[0];
+                    })
                     this._user.getById(this.mainModel.UserId).subscribe(res => {
 
                         if (res.Status == 1) {
