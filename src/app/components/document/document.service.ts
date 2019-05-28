@@ -32,4 +32,12 @@ export class DocumentService {
     return this._http.delete(myGlobals.baseUrl + "/document/"+Id)
     .pipe(map((response: any) => response));
   }
+  getAllShares(): Observable<any> {
+    return this._http.get(myGlobals.baseUrl + "/document/shares")
+    .pipe(map((response: any) => response));
+  }
+  ShareDocument(model:any): Observable<any> {
+    return this._http.post(myGlobals.baseUrl + "/document/shares",model)
+    .pipe(map((response: any) => response));
+  }
 }

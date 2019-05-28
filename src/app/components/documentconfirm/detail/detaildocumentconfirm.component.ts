@@ -34,12 +34,11 @@ export class DetailDocConfirmComponent implements OnInit {
     mainModel: DocumentConfirmModel;
     documentModel: any;
     uploadDataUrl: string = uploadDataUrl;
-    responseModel: DocumentConfirmResponseDisplayModel = {};
+    responseModel: DocumentConfirmResponseDisplayModel={};
     isShowActions: boolean = false;
     dm_users: SelectItem[];
     dm_partners: SelectItem[];
     InvokeUser: SelectItem;
-    Author: SelectItem;
     dm_priories: SelectItem[];
     constructor(
         private _service: DocumentConfirmService,
@@ -91,7 +90,7 @@ export class DetailDocConfirmComponent implements OnInit {
                             break;
                         }
                         case Module.RECEIVE: {
-                            this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
+                             this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
                                 if (doc.Status == 1) {
                                     this.documentModel = doc.Data;
                                     this.documentModel.AttachedFileUrl;
@@ -111,18 +110,6 @@ export class DetailDocConfirmComponent implements OnInit {
                             break;
                         }
                     }
-                    this._user.getAllBase().subscribe(res => {
-                        this.dm_users = [];
-                        if (res.Status == 1) {
-                            for (let i = 0; i < res.Data.length; i++) {
-                                this.dm_users.push({
-                                    label: res.Data[i].UserName,
-                                    value: res.Data[i].UserId
-                                });
-                            }
-                        }
-                        this.Author = this.dm_users.filter(u => u.value == this.mainModel.CreatedByUserId)[0];
-                    })
                     this._user.getById(this.mainModel.UserId).subscribe(res => {
 
                         if (res.Status == 1) {
@@ -145,7 +132,7 @@ export class DetailDocConfirmComponent implements OnInit {
                     })
                 }
             })
-            this._service.GetResponse(this.crnt_user.UserId, this.Id).subscribe(res => {
+            this._service.GetResponse( this.crnt_user.UserId,this.Id).subscribe(res => {
                 if (res.Status == 1) {
                     this.isShowActions = false;
                 }
@@ -189,7 +176,7 @@ export class DetailDocConfirmComponent implements OnInit {
         this.responseModel.ResponseStatus = 0;
         this.save();
     }
-    DetailUser(Id: number) {
+    DetailUser(Id:number){
 
     }
 }

@@ -10,8 +10,8 @@
             <div class="ui-toolbar-group-left">
                 <button pButton type="button" label="Tạo tệp" icon="pi pi-plus" style="margin-right: .25em !important;"
                     (click)="displayCreate_1=true"></button>
-                <p-splitButton label="Gửi" icon="fas fa-arrow-right" (onClick)="send()" [model]="send_methods">
-                </p-splitButton>
+                <button pButton type="button" label="Gửi" icon="fas fa-arrow-right" style="margin-right: .25em !important;"
+                    (click)="ShareDocument()" *ngIf="crnt_user.DepartmentId==0&&selectedFile"></button>
             </div>
             <div class="ui-toolbar-group-right">
                 <button pButton type="button" icon="pi pi-search" [routerLink]="['/truy-van-van-ban']"
@@ -77,7 +77,7 @@
                                 <td> <button pButton icon="fas fa-bezier-curve" (click)="showCateItem($event,item,op)"
                                         class="ui-button-secondary"></button></td>
                                 <td>
-                                        <button pButton icon="fas fa-eye" (click)="OpenDetail(item)"
+                                    <button pButton icon="fas fa-eye" (click)="OpenDetail(item)"
                                         class="ui-button-success"></button>
                                     <button pButton icon="fas fa-edit" (click)="OpenUpdate(item)"
                                         class="ui-button-warning"></button>
@@ -98,8 +98,9 @@
             [style]="{width: '300px', minWidth: '200px'}" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
 
             <p-fileUpload #new_file mode="basic" name="new_file[]" customUpload="true"
-                (uploadHandler)="myUploader($event,new_file)" maxFileSize="10000000" auto="true" chooseLabel="Tải tệp lên"
-                (onSelect)="OnSelectFile($event)" (onProgress)="OnUploading($event,$value)"></p-fileUpload>
+                (uploadHandler)="myUploader($event,new_file)" maxFileSize="10000000" auto="true"
+                chooseLabel="Tải tệp lên" (onSelect)="OnSelectFile($event)" (onProgress)="OnUploading($event,$value)">
+            </p-fileUpload>
 
         </p-dialog>
         <p-dialog header="Xem thông tin" [(visible)]="displayDetail" [modal]="true" [responsive]="true"
@@ -448,6 +449,96 @@
                 </div>
             </div>
         </p-overlayPanel>
+        <p-dialog header="Gửi tài liệu tới phòng ban" [(visible)]="displayShare" [modal]="true" [responsive]="true"
+        [style]="{width: '600px', minWidth: '200px'}" [maximizable]="true" appendTo="body">
+        <div>
+            <p-messages [(value)]="msgs"></p-messages>
+            <p-fieldset legend="Thông tin tệp" [toggleable]="true">
+                <div *ngIf="selectedFile">
+                    <div class="form-group">
+                        <div style="
+                        display: flex;
+                        padding: 10px 0;
+                        padding-right: 15px;
+                        border-bottom: 1px dashed;
+                    ">
+    
+                            <div style="margin-right:10px">Tệp đính kèm:</div>
+                            <div style="cursor:pointer;color:#07C">
+                                <i class="fas fa-paperclip" style="margin-right:5px"></i>
+                                <a style="color:inherit !important" href="{{selectedFile.FileUrl}}" target="blank">Xem tại
+                                    đây</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-4">
+                                Tên
+                            </div>
+                            <div class="col-8">
+                                {{selectedFile.Name}}
+                            </div>
+                        </div>
+    
+    
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-4">
+                                Mô tả
+                            </div>
+                            <div class="col-8">
+                                {{selectedFile.Description}}
+                            </div>
+                        </div>
+    
+    
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-4">
+                                Thể loại
+                            </div>
+                            <div class="col-8">
+                                {{getCateString(selectedFile.FileCates)}}
+                            </div>
+                        </div>
+                    </div>
+                   
+                 
+                </div>
+            </p-fieldset>
+            <p-fieldset legend="Thông tin gửi">
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        Phòng ban nhận
+                    </div>
+                    <div class="col-md-8">
+                        <p-dropdown [options]="dm_departments" [(ngModel)]="ShareDocumentModel.DepartmentId" [autoWidth]="false" [style]="{width: '100%'}"></p-dropdown>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                       Lời nhắn
+                    </div>
+                    <div class="col-md-8">
+                        <textarea class="form-control" rows="3"
+                        [(ngModel)]="ShareDocumentModel.Message"></textarea>
+                    </div>
+                </div>
+            </p-fieldset>
+
+        </div>
+
+
+        <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="share()" label="Gửi"
+                class="ui-button-success"></button>
+            <button type="button" pButton icon="fas fa-times" (click)="displayShare=false" label="Hủy bỏ"
+                class="ui-button-danger"></button>
+        </p-footer>
+    </p-dialog>
     </div>
 
 
