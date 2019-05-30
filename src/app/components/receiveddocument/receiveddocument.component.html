@@ -6,7 +6,7 @@
     <p-toast></p-toast>
     <div class="container-fluid">
         <div>
-            <p-table #dt [value]="docs" [paginator]="true" [rows]="10" [columns]="cols" [(selection)]="selectedDoc"
+            <p-table #dt [value]="docs" [paginator]="true" [rows]="10" [(selection)]="selectedDoc"
                 selectionMode="single" dataKey="ReceivedDocumentId">
                 <ng-template pTemplate="caption">
                     <div style="display:flex">

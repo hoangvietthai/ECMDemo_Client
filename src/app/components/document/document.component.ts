@@ -94,20 +94,31 @@ export class DocumentComponent implements OnInit {
         this.dirs = [];
         this._dir.getAllNodes(0).subscribe(res => {
             if (res.Status == 1) {
-                this.dirs.push({
-                    label: this.crnt_user.Department,
-                    data: null,
-                    expandedIcon: "fa fa-folder-open",
-                    collapsedIcon: "fa fa-folder",
-                    children: res.Data
-                });
-                if (this.crnt_user.DepartmentId != 0) {
+
+                if (this.crnt_user.DepartmentId != 1) {
+                    this.dirs.push({
+                        label: this.crnt_user.Department,
+                        data: null,
+                        expandedIcon: "fa fa-folder-open",
+                        collapsedIcon: "fa fa-folder",
+                        children: res.Data
+                    });
                     this.dirs.push({
                         label: "Phòng văn thư",
                         data: 0,
                         expandedIcon: "fa fa-folder-open",
                         collapsedIcon: "fa fa-folder"
                     });
+                }
+                else {
+                    this.dirs.push({
+                        label: "Toàn bộ đơn vị",
+                        data: null,
+                        expandedIcon: "fa fa-folder-open",
+                        collapsedIcon: "fa fa-folder",
+                        children: res.Data
+                    });
+
                 }
 
                 this.expandAll();
@@ -305,7 +316,7 @@ export class DocumentComponent implements OnInit {
     nodeSelect(event) {
         this.selectedNode = event.node;
         if (event.node.data != null) {
-            if (event.node.data == 0) {
+            if ((event.node.data == 0) && (this.crnt_user.DepartmentId > 1)) {
                 this._service.getAllShares().subscribe(res => {
                     if (res.Status == 1) {
                         this.docs = [];
@@ -313,9 +324,15 @@ export class DocumentComponent implements OnInit {
                     }
                 });
             }
+            else if (event.node.ParentId == -1) {
+                this._service.getAllInDepartment(parseInt(event.node.data)).subscribe(res => {
+                    if (res.Status == 1) {
+                        this.docs = [];
+                        this.docs = res.Data;
+                    }
+                });
+            }
             else {
-
-
                 this._service.getAllInDirectory(parseInt(event.node.data)).subscribe(res => {
                     if (res.Status == 1) {
                         this.docs = [];
@@ -428,9 +445,6 @@ export class DocumentComponent implements OnInit {
         if (f.size > 10000000) {
             this.messageService.add({ severity: 'error', summary: 'Chọn tệp không thành công', detail: 'File quá lớn' });
         }
-    }
-    OnUploading(event, value) {
-
     }
     myUploader(event, file_input) {
         let f = event.files[0];

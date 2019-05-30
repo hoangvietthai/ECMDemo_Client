@@ -16,6 +16,10 @@ export class DocumentService {
     return this._http.get(myGlobals.baseUrl + "/document?DirectoryId="+DirectoryId)
     .pipe(map((response: any) => response));
   }
+  getAllInDepartment(DepartmentId:number): Observable<any> {
+    return this._http.get(myGlobals.baseUrl + "/document?DepartmentId="+DepartmentId)
+    .pipe(map((response: any) => response));
+  }
   getById(Id:number): Observable<any> {
     return this._http.get(myGlobals.baseUrl + "/document/"+Id)
     .pipe(map((response: any) => response));

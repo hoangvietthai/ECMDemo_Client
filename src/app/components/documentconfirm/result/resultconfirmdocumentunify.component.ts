@@ -29,6 +29,8 @@ import { DocumentStatusService } from '../../documentstatus/documentstatus.servi
     ]
 })
 export class ResultDocConfirmComponent implements OnInit {
+    BreadcrumbItems: MenuItem[];
+    BreadcrumbHome: MenuItem;
     display: boolean = false;
     files_of_doc: any[];
     folder: string;
@@ -62,6 +64,13 @@ export class ResultDocConfirmComponent implements OnInit {
         private _receive: ReceivedDocumentService,
         private _internal: InternalDocumentService
     ) {
+        this.BreadcrumbItems = [
+            { label: 'Phê duyệt văn bản', url: '' },
+            { label: 'kết quả' }
+        ];
+        this.BreadcrumbHome = {
+            icon: "pi pi-home"
+        }
         this.dm_priories = [];
         this.dm_priories.push({
             value: 1,

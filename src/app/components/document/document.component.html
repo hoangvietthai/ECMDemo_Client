@@ -23,7 +23,7 @@
             <div class="col-md-4 col-lg-4">
                 <div #tree>
                     <p-tree [value]="dirs" selectionMode="single" [(selection)]="selectedDir"
-                        (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+                        (onNodeSelect)="nodeSelect($event)"></p-tree>
                     <p-contextMenu [model]="menu_context" [target]="tree" appendTo="body"></p-contextMenu>
                 </div>
             </div>
@@ -99,7 +99,7 @@
 
             <p-fileUpload #new_file mode="basic" name="new_file[]" customUpload="true"
                 (uploadHandler)="myUploader($event,new_file)" maxFileSize="10000000" auto="true"
-                chooseLabel="Tải tệp lên" (onSelect)="OnSelectFile($event)" (onProgress)="OnUploading($event,$value)">
+                chooseLabel="Tải tệp lên" (onSelect)="OnSelectFile($event)">
             </p-fileUpload>
 
         </p-dialog>

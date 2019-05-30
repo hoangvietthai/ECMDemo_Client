@@ -118,6 +118,9 @@ export class CreateDocPerformComponent implements OnInit {
 
 
     }
+    close(){
+        this.ref.close();
+    }
     SelectDate($value:Date){
         let tmp=new Date($value.toJSON());
         console.log(tmp);

@@ -111,4 +111,7 @@ export class CreateDocConfirmComponent implements OnInit {
             
         });
     }
+    close(){
+        this.ref.close();
+    }
 }

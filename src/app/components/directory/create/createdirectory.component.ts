@@ -28,7 +28,9 @@ export class CreateDirectoryComponent implements OnInit {
         });
         this._service.getAllByModule(this.config.data.ModuleId).subscribe(res => {
             if (res.Status == 1) {
-                for (let i = 0; i < res.Data.length; i++) {
+                let user=JSON.parse(localStorage.getItem("ssuser"));
+                let tmp=res.Data.filter(d=>d.DepartmentId==user.DepartmentId);
+                for (let i = 0; i < tmp.length; i++) {
                     this.directories.push({
                         value: res.Data[i].DirectoryId,
                         label: res.Data[i].Name
@@ -36,7 +38,6 @@ export class CreateDirectoryComponent implements OnInit {
 
                 }
                 this.createModel.ParentId = parseInt(this.config.data.ParentId);
-
             }
         });
     }
