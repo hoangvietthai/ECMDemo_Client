@@ -26,6 +26,8 @@ import { Module } from '../../home/taskmessage';
     ]
 })
 export class DetailDocUnifyComponent implements OnInit {
+    BreadcrumbItems: MenuItem[];
+    BreadcrumbHome: MenuItem;
     display: boolean = false;
     files_of_doc: any[];
     folder: string;
@@ -54,6 +56,13 @@ export class DetailDocUnifyComponent implements OnInit {
         private _internal: InternalDocumentService
 
     ) {
+        this.BreadcrumbItems = [
+            { label: 'Thống nhất văn bản', url: '' },
+            { label: 'Chi tiết' }
+        ];
+        this.BreadcrumbHome = {
+            icon: "pi pi-home"
+        }
         this.dm_priories = [];
         this.dm_priories.push({
             value: 1,

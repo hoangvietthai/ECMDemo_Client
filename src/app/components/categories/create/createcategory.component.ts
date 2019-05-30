@@ -75,4 +75,7 @@ export class CreateCategoryComponent implements OnInit {
 
 
     }
+    close(){
+        this.ref.close();
+    }
 }

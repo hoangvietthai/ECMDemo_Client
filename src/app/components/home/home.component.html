@@ -1,4 +1,4 @@
-<div class="container" *ngIf="user.UserRole>1">
+<div class="container" *ngIf="user.UserRole>2">
     <div class="row">
         <div class="col-6">
             <p-fieldset legend="Tài liệu phòng ban">
@@ -69,12 +69,12 @@
         </div>
     </div>
 </div>
-<div class="container-fluid" *ngIf="user.UserRole==1">
+<div class="container-fluid" *ngIf="user.UserRole==1||user.UserRole==2">
     <div class="row tile_count">
         <div class="col-md-5 tile_stats_count" style="padding:0">
-            <div class="count">Giám Đốc</div>
+            <div class="count">{{user.FullName}}</div>
             <div class="teacher">
-                Chức vụ: Giám đốc
+                Chức vụ: {{user.UserRole==1?"Giám Đốc":"Trưởng Phòng"}} 
             </div>
         </div>
         <div class="col-md-7" style="padding:0">
@@ -83,7 +83,7 @@
                     <span class="count_top">
                         <i class="fa fa-user"></i>Tổng số tệp
                     </span>
-                    <div class="count">512</div>
+                    <div class="count">{{private_documents.length+public_documents.length}}</div>
                 </div>
 
                 <div class="col-md-3 tile_stats_count">
@@ -91,7 +91,7 @@
                         <i class="fas fa-list-ol"></i>
                         Văn bản đi
                     </span>
-                    <div class="count">231</div>
+                    <div class="count">{{count_send}}</div>
 
                 </div>
                 <div class="col-md-3 tile_stats_count">
@@ -99,7 +99,7 @@
                         <i class="fas fa-list-ol"></i>
                         Văn bản đến
                     </span>
-                    <div class="count">254</div>
+                    <div class="count">{{count_recei}}</div>
 
                 </div>
                 <div class="col-md-3 tile_stats_count">
@@ -107,7 +107,7 @@
                         <i class="fas fa-list-ol"></i>
                         Văn bản nội bộ
                     </span>
-                    <div class="count">643</div>
+                    <div class="count">{{count_internal}}</div>
 
                 </div>
 
@@ -315,9 +315,7 @@
         </p-table>
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
-            class="ui-button-success"></button>
-        <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+        <button type="button" pButton icon="fas fa-times" (click)="displayTaskDialog=false" label="Hủy bỏ"
             class="ui-button-danger"></button>
     </p-footer>
 </p-dialog>
@@ -353,9 +351,7 @@
         </p-table>
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
-            class="ui-button-success"></button>
-        <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+        <button type="button" pButton icon="fas fa-times" (click)="displayDocDialog=false" label="Hủy bỏ"
             class="ui-button-danger"></button>
     </p-footer>
 </p-dialog>
@@ -436,7 +432,7 @@
 
 
     <p-footer>
-        <button type="button" pButton icon="fas fa-times" (click)="displayDetail=false" label="Đóng"
+        <button type="button" pButton icon="fas fa-times" (click)="displayDocDetail=false" label="Đóng"
             class="ui-button-info"></button>
     </p-footer>
 </p-dialog>

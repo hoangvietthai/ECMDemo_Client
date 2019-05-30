@@ -30,6 +30,8 @@ import { DocumentStatusService } from '../../documentstatus/documentstatus.servi
     styleUrls: ['./resultdocumentperform.component.css']
 })
 export class ResultDocPerformComponent implements OnInit {
+    BreadcrumbItems: MenuItem[];
+    BreadcrumbHome: MenuItem;
     display: boolean = false;
     files_of_doc: any[];
     folder: string;
@@ -65,6 +67,13 @@ export class ResultDocPerformComponent implements OnInit {
         private _receive: ReceivedDocumentService,
         private _internal: InternalDocumentService
     ) {
+        this.BreadcrumbItems = [
+            { label: 'Thực hiện văn bản', url: '' },
+            { label: 'Kết quả' }
+        ];
+        this.BreadcrumbHome = {
+            icon: "pi pi-home"
+        }
         this.dm_priories = [];
         this.dm_priories.push({
             value: 1,
