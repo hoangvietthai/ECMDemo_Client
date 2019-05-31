@@ -5,6 +5,10 @@ import { DocumentModel } from '../document/document';
 import { DocumentService } from '../document/document.service';
 import { Router } from '@angular/router';
 import { DocumentCateService } from '../categories/category.service';
+import { SendDocumentService } from '../senddocument/senddocument.service';
+import { ReceivedDocumentService } from '../receiveddocument/receiveddocument.service';
+import { InternalDocumentService } from '../internaldocument/internaldocument.service';
+import { from } from 'rxjs';
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
@@ -13,7 +17,10 @@ import { DocumentCateService } from '../categories/category.service';
   providers: [
     HomeService,
     DocumentService,
-    DocumentCateService
+    DocumentCateService,
+    SendDocumentService,
+    ReceivedDocumentService,
+    InternalDocumentService
   ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -29,23 +36,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   selected_tasks: TaskMessageDisplayModel[];
   selected_docs: DocumentModel[] = [];
   selectedDoc: DocumentModel;
+  count_send: any;
+  count_recei: any;
+  count_internal: any;
   selectedTask: TaskMessageDisplayModel;
   displayTaskDialog: boolean = false;
   displayDocDialog: boolean = false;
   displayDocDetail: boolean = false;
   cates: any[];
-  private user: any;
+  public user: any;
   pendingtasks: PendingTaskModel[];
   expiredtasks: ExpiredTaskModel[];
   constructor(
     private _task: HomeService,
     private _doc: DocumentService,
     private _router: Router,
-    private _cate: DocumentCateService
+    private _cate: DocumentCateService,
+    private _send: SendDocumentService,
+    private _recei: ReceivedDocumentService,
+    private _internal: InternalDocumentService
   ) { }
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("ssuser"));
-    if (this.user.UserRole == 1) {
+    if (this.user.UserRole == 1 || this.user.UserRole == 2) {
       this._task.getPendingTasks().subscribe(res => {
         if (res.Status == 1) {
           this.pendingtasks = res.Data;
@@ -57,6 +70,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       })
     }
+    this._send.getAll().subscribe(res => {
+      if (res.Status == 1) {
+        this.count_send = res.Data.length;
+      }
+    });
+    this._recei.getAll().subscribe(res => {
+      if (res.Status == 1) {
+        this.count_recei = res.Data.length;
+      }
+    });
+    this._internal.getAll().subscribe(res => {
+      if (res.Status == 1) {
+        this.count_internal = res.Data.length;
+      }
+    });
     this.GetMessages();
     this._doc.getAll().subscribe(res => {
       if (res.Status == 1) {
@@ -251,6 +279,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   intervalId = window.setInterval(() => this.GetMessages(), 3000);
+  update() {
+
+  }
   ngOnDestroy() {
     clearInterval(this.intervalId);
   }

@@ -10,8 +10,7 @@
                 <button pButton type="button" label="Lưu lại" (click)="save()" icon="pi pi-check"
                     class="ui-button-success" style="margin-right: .25em !important;"></button>
                
-                <p-splitButton label="Gửi" icon="fas fa-arrow-right" (onClick)="send()" [model]="send_methods"
-                    class="ui-button-warning"></p-splitButton>
+               
                 <button pButton type="button" label="In" icon="fas fa-print" class="ui-button-primary"
                     style="margin-right: .25em !important;"></button>
             </div>
@@ -168,7 +167,7 @@
                         <div class="col-md-12">
                             <p-fileUpload mode="basic" #new_file name="myfile[]" customUpload="true"
                                 showUploadButton="false" showCancelButton="false"
-                                (uploadHandler)="myUploader($event,new_file)" (onSelect)="OnSelectFile($event,new_file)"
+                                (onSelect)="OnSelectFile($event,new_file)"
                                 multiple="multiple" chooseLabel="Chọn tệp" uploadLabel="Tải lên" cancelLabel="Hủy bỏ">
                             </p-fileUpload>
 

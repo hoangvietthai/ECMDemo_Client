@@ -227,6 +227,7 @@ export class InternalDocumentComponent implements OnInit {
     }
     nodeSelect(event) {
         this.selectedNode = event.node;
+        console.log(event.node);
         if (event.node.data != null) {
             this._service.getAllInDirectory(parseInt(event.node.data)).subscribe(res => {
                 if (res.Status == 1) {

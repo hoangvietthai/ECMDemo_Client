@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { SelectItem, Message, MenuItem, TreeNode, MessageService } from 'primeng/api';
 import { DocumentService } from './document.service';
 import { UploadService } from '../upload/upload.service';
-import { DocumentCreateModel, DocumentDisplayModel, DocumentModel, DocumentUpdateModel } from './document';
+import { DocumentCreateModel, DocumentDisplayModel, DocumentModel, DocumentUpdateModel, ShareDocumentModel } from './document';
 import { DocumentCateService } from '../categories/category.service';
 import { DirectoryService } from '../directory/directory.service';
 import { UserService } from '../user/user.service';
@@ -16,6 +16,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { ConfirmationService } from 'primeng/api';
 import { DirectoryUpdateModel } from '../directory/directory';
 import { ErrorDialogService } from '../shared/error/dialog/errordialog.service';
+import { DepartmentService } from '../department/department.service';
 @Component({
     templateUrl: './document.component.html',
     styleUrls: ['./document.component.css'],
@@ -29,7 +30,8 @@ import { ErrorDialogService } from '../shared/error/dialog/errordialog.service';
         MessageService,
         DialogService,
         ConfirmationService,
-        ErrorDialogService
+        ErrorDialogService,
+        DepartmentService
     ]
 })
 export class DocumentComponent implements OnInit {
@@ -42,16 +44,17 @@ export class DocumentComponent implements OnInit {
     selectedCate: any;
     displayCreateDialog: boolean = false;
     displayUpdateDialog: boolean = false;
-    displayDetail:boolean=false;
+    displayDetail: boolean = false;
     displayUpdateDirNameDialog: boolean = false;
     dm_cates: SelectItem[];
     dm_groupcates: SelectItem[];
-    send_methods: MenuItem[];
+    dm_departments: SelectItem[] = [];
     dirs: TreeNode[];
     directories: any[];
     selectedDir: TreeNode;
     displayCreate: boolean = false;
     displayCreate_1: boolean = false;
+    displayShare: boolean = false;
     uploadFile: any;
     folder: string;
     cates: SelectItem[];
@@ -62,6 +65,7 @@ export class DocumentComponent implements OnInit {
     selectedNode: any;
     updateDirModel: DirectoryUpdateModel;
     msgs: Message[] = [];
+    ShareDocumentModel: ShareDocumentModel = {};
     //
     groupCateId: number;
     //
@@ -81,7 +85,8 @@ export class DocumentComponent implements OnInit {
         public dialogService: DialogService,
         private progress: NgProgress,
         private confirmationService: ConfirmationService,
-        private errorDialogService: ErrorDialogService
+        private errorDialogService: ErrorDialogService,
+        private _department: DepartmentService
     ) {
 
     }
@@ -89,13 +94,33 @@ export class DocumentComponent implements OnInit {
         this.dirs = [];
         this._dir.getAllNodes(0).subscribe(res => {
             if (res.Status == 1) {
-                this.dirs.push({
-                    label: "Thư mục",
-                    data: null,
-                    expandedIcon: "fa fa-folder-open",
-                    collapsedIcon: "fa fa-folder",
-                    children: res.Data
-                });
+
+                if (this.crnt_user.DepartmentId != 1) {
+                    this.dirs.push({
+                        label: this.crnt_user.Department,
+                        data: null,
+                        expandedIcon: "fa fa-folder-open",
+                        collapsedIcon: "fa fa-folder",
+                        children: res.Data
+                    });
+                    this.dirs.push({
+                        label: "Phòng văn thư",
+                        data: 0,
+                        expandedIcon: "fa fa-folder-open",
+                        collapsedIcon: "fa fa-folder"
+                    });
+                }
+                else {
+                    this.dirs.push({
+                        label: "Toàn bộ đơn vị",
+                        data: null,
+                        expandedIcon: "fa fa-folder-open",
+                        collapsedIcon: "fa fa-folder",
+                        children: res.Data
+                    });
+
+                }
+
                 this.expandAll();
             }
         })
@@ -154,13 +179,20 @@ export class DocumentComponent implements OnInit {
 
             }
         })
+        this._department.getAll().subscribe(res => {
+            for (let i = 0; i < res.Data.length; i++) {
+                this.dm_departments.push({
+                    value: res.Data[i].DepartmentId,
+                    label: res.Data[i].Name
+                });
+            }
+            //  this.docs = this.docs.filter((val, j) => j != index);
+            this.dm_departments = this.dm_departments.filter(d => d.value != this.crnt_user.DepartmentId);
+
+        })
 
 
-        this.directories = [];
-        this.directories.push({
-            value: 0,
-            label: 'Thư mục gốc'
-        });
+
         this._dir.getAll().subscribe(res => {
             if (res.Status == 1) {
                 for (let i = 0; i < res.Data.length; i++) {
@@ -185,29 +217,6 @@ export class DocumentComponent implements OnInit {
 
             }
         });
-        this.send_methods = [
-            {
-                label: 'Đi xử lý', icon: 'pi pi-refresh', command: () => {
-                    //
-                }
-            },
-            {
-                label: 'Cần thống nhất', icon: 'pi pi-times', command: () => {
-                    //
-                }
-            },
-            {
-                label: 'Cần phê duyệt', icon: 'pi pi-times', command: () => {
-                    //
-                }
-
-            },
-            {
-                label: 'Chờ tham khảo', icon: 'pi pi-times', command: () => {
-                    //
-                }
-            }
-        ];
         this.crnt_user = JSON.parse(localStorage.getItem('ssuser'));
 
         this.folder = this.crnt_user.UserId + '_' + new Date().valueOf();
@@ -216,20 +225,20 @@ export class DocumentComponent implements OnInit {
                 label: 'Tạo thư mục',
                 icon: 'fas fa-plus',
                 command: (event) => {
-
-                    if (this.selectedNode) {
-                        this.openCreateDir({
-                            ParentId: this.selectedNode.data,
-                            ModuleId: 0
-                        });
+                    if (this.selectedNode.data != 0) {
+                        if (this.selectedNode) {
+                            this.openCreateDir({
+                                ParentId: this.selectedNode.data,
+                                ModuleId: 0
+                            });
+                        }
+                        else {
+                            this.openCreateDir({
+                                ParentId: 0,
+                                ModuleId: 0
+                            });
+                        }
                     }
-                    else {
-                        this.openCreateDir({
-                            ParentId: 0,
-                            ModuleId: 0
-                        });
-                    }
-
                     //event.originalEvent: Browser event
                     //event.item: menuitem metadata
                 }
@@ -255,8 +264,19 @@ export class DocumentComponent implements OnInit {
                 }
             }
         ];
+        this.directories = [];
+        this.directories.push({
+            value: null,
+            label: 'Thư mục gốc'
+        });
+        if (this.crnt_user.DepartmentId != 0) {
+            this.directories.push({
+                value: 0,
+                label: 'Phòng văn thư'
+            });
+        }
         this.loadNodes();
-       
+
     }
     expandAll() {
         this.dirs.forEach(node => {
@@ -275,7 +295,7 @@ export class DocumentComponent implements OnInit {
         }
         else {
 
-          
+
 
             this.mainModel = {};
             this.mainModel.CreatedOnDate = new Date();
@@ -296,20 +316,42 @@ export class DocumentComponent implements OnInit {
     nodeSelect(event) {
         this.selectedNode = event.node;
         if (event.node.data != null) {
-            this._service.getAllInDirectory(parseInt(event.node.data)).subscribe(res => {
-                if (res.Status == 1) {
-                    this.docs = [];
-                    this.docs = res.Data;
-                }
-            });
+            if ((event.node.data == 0) && (this.crnt_user.DepartmentId > 1)) {
+                this._service.getAllShares().subscribe(res => {
+                    if (res.Status == 1) {
+                        this.docs = [];
+                        this.docs = res.Data;
+                    }
+                });
+            }
+            else if (event.node.ParentId == -1) {
+                this._service.getAllInDepartment(parseInt(event.node.data)).subscribe(res => {
+                    if (res.Status == 1) {
+                        this.docs = [];
+                        this.docs = res.Data;
+                    }
+                });
+            }
+            else {
+                this._service.getAllInDirectory(parseInt(event.node.data)).subscribe(res => {
+                    if (res.Status == 1) {
+                        this.docs = [];
+                        this.docs = res.Data;
+                    }
+                });
+            }
         }
         else {
+
+
             this._service.getAll().subscribe(res => {
                 if (res.Status == 1) {
                     this.docs = [];
                     this.docs = res.Data;
                 }
             });
+
+
         }
 
     }
@@ -355,9 +397,9 @@ export class DocumentComponent implements OnInit {
             })
         }
     }
-    OpenDetail(item:any){
-        this.selectedFile=item;
-        this.displayDetail=true;
+    OpenDetail(item: any) {
+        this.selectedFile = item;
+        this.displayDetail = true;
     }
     getString(arr: any[]) {
         let strings: string[] = [];
@@ -404,10 +446,7 @@ export class DocumentComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Chọn tệp không thành công', detail: 'File quá lớn' });
         }
     }
-    OnUploading(event, value) {
-
-    }
-    myUploader(event,file_input) {
+    myUploader(event, file_input) {
         let f = event.files[0];
         this.uploadFile = f;
         this.OpenCreate();
@@ -511,11 +550,11 @@ export class DocumentComponent implements OnInit {
     create() {
         if (this.mainModel.DirectoryId == null) {
             this.msgs = [];
-            this.msgs.push({severity:'warn', summary:'Bạn chưa chọn thư mục lưu'});
+            this.msgs.push({ severity: 'warn', summary: 'Bạn chưa chọn thư mục lưu' });
         }
         else if (this.selectedCate.items.length == 0) {
             this.msgs = [];
-            this.msgs.push({severity:'warn', summary:'Bạn chưa chọn thể loại tài liệu'});
+            this.msgs.push({ severity: 'warn', summary: 'Bạn chưa chọn thể loại tài liệu' });
         }
         else {
 
@@ -601,12 +640,12 @@ export class DocumentComponent implements OnInit {
         this.selectedFile = cate;
         overlaypanel.toggle(event);
     }
-    getCateString(str:string) {
-       let _str='';
+    getCateString(str: string) {
+        let _str = '';
         let str_arr = str.split(',').filter(i => i);
-        let results = this.cates.filter(c => str_arr.includes(c.value.toString())).filter(function(el) { return el; });
-        for(let i=0;i<results.length;i++){
-            _str+= results[i].label+',';
+        let results = this.cates.filter(c => str_arr.includes(c.value.toString())).filter(function (el) { return el; });
+        for (let i = 0; i < results.length; i++) {
+            _str += results[i].label + ',';
         }
         return _str;
     }
@@ -638,5 +677,24 @@ export class DocumentComponent implements OnInit {
         }
 
     }
-
+    ShareDocument() {
+        if (this.dm_departments && this.dm_departments.length > 0) {
+            this.ShareDocumentModel.DepartmentId = this.dm_departments[0].value;
+        }
+        this.displayShare = true;
+    }
+    share() {
+        this.ShareDocumentModel.DocumentId = this.selectedFile.DocumentId;
+        this._service.ShareDocument(this.ShareDocumentModel).subscribe(res => {
+            if (res.Status == 1) {
+                this.displayShare = false;
+                this.ShareDocumentModel = {};
+                this.selectedFile = null;
+                this.messageService.add({ severity: 'info', summary: 'Gửi tài liệu thành công' });
+            }
+            else {
+                this.messageService.add({ severity: 'error', summary: 'Gửi tài liệu không thành công' });
+            }
+        })
+    }
 }

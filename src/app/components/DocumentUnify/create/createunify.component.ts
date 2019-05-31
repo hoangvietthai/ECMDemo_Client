@@ -154,4 +154,7 @@ export class CreateDocUnifyComponent implements OnInit {
         if (list.length > 0) str = str.substr(0, str.lastIndexOf(','));
         return str;
     }
+    close(){
+        this.ref.close();
+    }
 }

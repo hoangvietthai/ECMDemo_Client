@@ -81,6 +81,7 @@ import {PanelModule} from 'primeng/panel';
 import {StepsModule} from 'primeng/steps';
 //
 import {GlobalDocumentComponent} from './components/globaldocument/globaldocument.component';
+import {DirectoryComponent} from './components/directory/directory.component';
 //
 import { SelectDirectoryComponent} from './components/directory/selectdir/selectdir.component';
 import {SelectCategoryComponent} from './components/categories/selectcategory/selectcategory.component';
@@ -104,7 +105,7 @@ import {DetailProcessComponent} from './components/documentprocess/detail/detail
 //
 import {HomeAdminComponent} from './components/home_admin/home.component';
 //
-import {dateToTimePipe} from './time.pipe';
+import {dateToTimePipe,secondsToTimePipe,GroupByPipe} from './time.pipe';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -139,6 +140,7 @@ export function tokenGetter() {
     GlobalDocumentComponent,
     ErrorComponent,
     ErrorDialogComponent,
+    DirectoryComponent,
     SelectDirectoryComponent,
     SelectCategoryComponent,
     SelectUserComponent,
@@ -156,7 +158,9 @@ export function tokenGetter() {
     DetailDocPerformComponent,
     CreateDocPerformComponent,
     ResultDocPerformComponent,
-    HomeAdminComponent
+    HomeAdminComponent,
+    secondsToTimePipe,
+    GroupByPipe
   ],
   imports: [
     BrowserModule,
