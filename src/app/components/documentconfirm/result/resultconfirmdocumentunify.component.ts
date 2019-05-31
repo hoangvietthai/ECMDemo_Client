@@ -44,6 +44,7 @@ export class ResultDocConfirmComponent implements OnInit {
     dm_users: SelectItem[];
     dm_partners: SelectItem[];
     InvokeUser: SelectItem;
+    Author: SelectItem;
     dm_priories: SelectItem[];
     displayReConfirm: boolean = false;
     response: DocumentConfirmResponseDisplayModel;
@@ -163,7 +164,18 @@ export class ResultDocConfirmComponent implements OnInit {
                             break;
                         }
                     }
-
+                    this._user.getAllBase().subscribe(res => {
+                        this.dm_users = [];
+                        if (res.Status == 1) {
+                            for (let i = 0; i < res.Data.length; i++) {
+                                this.dm_users.push({
+                                    label: res.Data[i].UserName,
+                                    value: res.Data[i].UserId
+                                });
+                            }
+                        }
+                        this.Author = this.dm_users.filter(u => u.value == this.mainModel.CreatedByUserId)[0];
+                    })
                     this._user.getById(this.mainModel.UserId).subscribe(res => {
 
                         if (res.Status == 1) {
