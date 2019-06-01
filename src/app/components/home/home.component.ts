@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this._task.getPendingTasks().subscribe(res => {
         if (res.Status == 1) {
           this.pendingtasks = res.Data;
+          console.log(this.pendingtasks)
         }
       });
       this._task.getExpiredTasks().subscribe(res => {

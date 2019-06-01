@@ -119,7 +119,7 @@ export class ReceivedDocumentComponent implements OnInit {
             if (res.Status == 1) {
                 for (let i=0; i< res.Data.length; i++) {
                     this.dm_departments.push( {
-                        value: res.Data[i].DepartmentId,
+                        value: res.Data[i].Name,
                         label: res.Data[i].Name
                     });
                 }

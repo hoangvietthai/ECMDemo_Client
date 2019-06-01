@@ -191,22 +191,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-5">
+        <div class="col-6">
             <p-fieldset legend="Các văn bản đang chờ xử lý({{pendingtasks.length}})">
                 <div>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <td>
-                                    STT
+                                    Tên nhiệm vụ
                                 </td>
                                 <td>
-                                    Trạng thái
+                                    Người tạo
                                 </td>
                                 <td>
-                                    Ngày tạo
+                                    Hạn
                                 </td>
-
+                                <td>
+                                    Loại tài liệu
+                                </td>
                                 <td style="width:40px">
 
                                 </td>
@@ -214,17 +216,21 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of pendingtasks;let i=index">
-                                <td>{{i+1}}</td>
                                 <td>
-                                    {{GetTaskName(item.TaskType,item.Status)}}
+                                    {{item.Title}}
                                 </td>
-
                                 <td>
-                                    {{item.CreatedOnDate | date:'dd/MM/yyyy'}}
+                                    {{item.CreatedByUser}}
+                                </td>
+                                <td>
+                                    {{item.DeadLine | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{item.ModuleId}}
                                 </td>
                                 <td>
                                     <button pButton icon="fas fa-eye" class="ui-button-success"
-                                    (click)="ViewTaskDetail1(item.TaskType,item.RelatedId)"  
+                                    (click)="ViewTaskDetail1(item.TaskType,item.RelatedId)"
                                     ></button>
                                 </td>
                             </tr>
@@ -235,7 +241,7 @@
                 </div>
             </p-fieldset>
         </div>
-        <div class="col-7">
+        <div class="col-6">
             <p-fieldset legend="Các văn bản đã quá hạn nhưng chưa xử lý ({{expiredtasks.length}})">
                 <div>
                     <table class="table table-bordered">

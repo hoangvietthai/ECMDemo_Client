@@ -167,11 +167,12 @@ export class SendDocumentComponent implements OnInit {
             if (res.Status == 1) {
                 for (let i=0; i< res.Data.length; i++) {
                     this.dm_departments.push( {
-                        value: res.Data[i].DepartmentId,
+                        value: res.Data[i].Name,
                         label: res.Data[i].Name
                     });
                 }
             }
+            console.log(this.dm_departments)
         })
         this.dm_partners = [];
         this._partner.getAll().subscribe(res => {
