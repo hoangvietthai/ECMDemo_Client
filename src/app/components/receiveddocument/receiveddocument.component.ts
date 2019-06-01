@@ -10,6 +10,7 @@ import { Module } from '../home/taskmessage';
 import { CreateProcessComponent } from '../documentprocess/create/createprocess.component';
 import { DocumentProcessService } from '../documentprocess/documentprocess.service';
 import { ErrorDialogService } from '../shared/error/dialog/errordialog.service';
+import { DepartmentService } from '../department/department.service';
 @Component({
     templateUrl: './receiveddocument.component.html',
     providers: [
@@ -20,13 +21,15 @@ import { ErrorDialogService } from '../shared/error/dialog/errordialog.service';
         DocumentStatusService,
         DialogService,
         DocumentProcessService,
-        ErrorDialogService
+        ErrorDialogService,
+        DepartmentService
     ]
 })
 export class ReceivedDocumentComponent implements OnInit {
     BreadcrumbItems: MenuItem[];
     BreadcrumbHome: MenuItem;
-
+    dm_departments: SelectItem[];
+    cols: any[];
     selectedDoc: ReceivedDocumentDisplayModel;
     docs: ReceivedDocumentDisplayModel[];
     dm_partners: SelectItem[];
@@ -39,7 +42,8 @@ export class ReceivedDocumentComponent implements OnInit {
         private _status: DocumentStatusService,
         private dialogService: DialogService,
         private _process: DocumentProcessService,
-        private errorDialogService: ErrorDialogService
+        private errorDialogService: ErrorDialogService,
+        private _depart: DepartmentService
     ) {
 
         this.process_methods = [
@@ -93,8 +97,34 @@ export class ReceivedDocumentComponent implements OnInit {
         this._service.getAll().subscribe(res => {
             if (res.Status == 1) {
                 this.docs = res.Data;
+                this.cols = [
+                    { field: 'Name', header: 'Tên gọi' },
+                    { field: 'ResignedNumber', header: 'Số đăng ký' },
+                    { field: 'ResignedOnDate', header: 'Ngày đăng ký' },
+                    { field: 'Sender', header: 'Người gửi' },
+                    { field: 'ReceiverUserFullName', header: 'Người nhận' },
+                    { field: 'DocumentIndex', header: 'Số văn bản' },
+                    { field: 'DocumentDate', header: 'Ngày văn bản đi'},
+                    { field: 'CreatedOnDate', header: 'Ngày tạo'},
+                    { field: 'DepartmentName', header: 'Phòng ban'}
+                ];
             }
         });
+        this.dm_departments = [];
+        this.dm_departments.push({
+            value: null,
+            label: "Tất cả"
+        });
+        this._depart.getAll().subscribe(res => {
+            if (res.Status == 1) {
+                for (let i=0; i< res.Data.length; i++) {
+                    this.dm_departments.push( {
+                        value: res.Data[i].Name,
+                        label: res.Data[i].Name
+                    });
+                }
+            }
+        })
         this.dm_partners = [];
         this._partner.getAll().subscribe(res => {
             if (res.Status == 1) {

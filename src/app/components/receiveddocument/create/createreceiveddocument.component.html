@@ -152,7 +152,7 @@
                         <div class="col-md-12">
                             <p-fileUpload mode="basic" #new_file name="myfile[]" customUpload="true"
                                 showUploadButton="false" showCancelButton="false"
-                                (uploadHandler)="myUploader($event,new_file)" (onSelect)="OnSelectFile($event,new_file)"
+                             (onSelect)="OnSelectFile($event,new_file)"
                                 multiple="multiple" chooseLabel="Chọn tệp" uploadLabel="Tải lên" cancelLabel="Hủy bỏ">
                             </p-fileUpload>
 

@@ -7,49 +7,79 @@
     <div class="container-fluid">
         <div>
             <p-table #dt [value]="docs" [paginator]="true" [rows]="10" [columns]="cols" [(selection)]="selectedDoc"
-             selectionMode="single"
-                dataKey="SendDocumentId">
+                selectionMode="single" dataKey="SendDocumentId">
                 <ng-template pTemplate="caption">
                     <div style="display:flex">
                         <div>
-                            <button pButton type="button" icon="fas fa-plus-circle" label="Tạo mới" [routerLink]="['/van-ban-di/tao-moi']"></button>
-                         
-                            <p-splitButton label="Quy trình" icon="fas fa-arrow-right" (onClick)="GetProcesses()" [model]="process_methods">
+                            <button pButton type="button" icon="fas fa-plus-circle" label="Tạo mới"
+                                [routerLink]="['/van-ban-di/tao-moi']"></button>
+
+                            <p-splitButton label="Quy trình" icon="fas fa-arrow-right" (onClick)="GetProcesses()"
+                                [model]="process_methods">
                             </p-splitButton>
                             <button type="button" pButton icon="fas fa-file-excel" label="Xuất dữ liệu" iconPos="left"
                                 (click)="dt.exportCSV()" class="ui-button-warning"></button>
                         </div>
                         <div style="flex: 1;text-align: right;">
                             <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                            <input type="text" pInputText size="50" placeholder="Tìm trong bảng" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                style="width:auto">
+                            <input type="text" pInputText size="50" placeholder="Tìm trong bảng"
+                                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
 
                         </div>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th style="width: 4em">STT</th>
-                        <th>Tên gọi</th>
-                        <th>Số và ngày đăng ký</th>
-                        <th>Người nhận</th>
-                        <th>Người ký</th>
-                        <th>Ngày tạo</th>
+                        <th style="width: 3em">
+                            STT
+                        </th>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                        </th>
                         <th style="width:10em"></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input *ngSwitchCase="'Name'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'ResignedNumber'" pInputText type="number"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'ResignedOnDate'" pInputText type="date"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'Receiver'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'SignedByUserFullName'" pInputText type="text"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'CreatedOnDate'" pInputText type="date"
+                                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                                <p-dropdown *ngSwitchCase="'DepartmentName'" [options]="dm_departments"
+                                        [style]="{'width':'100%'}"
+                                        (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
+                        </th> 
+                        <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="item" [ngClass]="{'col-green': item.ResignedNumber!=null}">
                         <td>{{rowIndex+1}}</td>
                         <td>{{item.Name}}</td>
-                        <td *ngIf="item.ResignedNumber">Số {{item.ResignedNumber}} ngày {{item.ResignedOnDate | date:'dd/MM/yyyy'}}</td>
+                        <td *ngIf="item.ResignedNumber">Số {{item.ResignedNumber}}</td>
+                        <td *ngIf="item.ResignedOnDate">{{item.ResignedOnDate | date:'dd/MM/yyyy'}}</td>
                         <td *ngIf="!item.ResignedNumber">Chưa đăng ký</td>
+                        <td *ngIf="!item.ResignedOnDate">Chưa đăng ký</td>
                         <td>{{item.Receiver}}</td>
                         <td>{{item.SignedByUserFullName}}</td>
                         <td>{{item.CreatedOnDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.DepartmentName}}</td>
                         <td>
-                            <button [routerLink]="['/van-ban-di/chi-tiet',item.SendDocumentId]" pButton icon="fa fa-edit" class="ui-button-warning"></button>
-                            <button pButton icon="fa fa-trash" (click)="ConfirmDelete(item)" class="ui-button-danger"></button>
+                            <button [routerLink]="['/van-ban-di/chi-tiet',item.SendDocumentId]" pButton
+                                icon="fa fa-edit" class="ui-button-warning"></button>
+                            <button pButton icon="fa fa-trash" (click)="ConfirmDelete(item)"
+                                class="ui-button-danger"></button>
                         </td>
                     </tr>
 

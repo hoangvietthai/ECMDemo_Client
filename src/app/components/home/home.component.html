@@ -1,4 +1,4 @@
-<div class="container" *ngIf="user.UserRole>1">
+<div class="container" *ngIf="user.UserRole>2">
     <div class="row">
         <div class="col-6">
             <p-fieldset legend="Tài liệu phòng ban">
@@ -69,12 +69,12 @@
         </div>
     </div>
 </div>
-<div class="container-fluid" *ngIf="user.UserRole==1">
+<div class="container-fluid" *ngIf="user.UserRole==1||user.UserRole==2">
     <div class="row tile_count">
         <div class="col-md-5 tile_stats_count" style="padding:0">
-            <div class="count">Giám Đốc</div>
+            <div class="count">{{user.FullName}}</div>
             <div class="teacher">
-                Chức vụ: Giám đốc
+                Chức vụ: {{user.UserRole==1?"Giám Đốc":"Trưởng Phòng"}} 
             </div>
         </div>
         <div class="col-md-7" style="padding:0">
@@ -83,7 +83,7 @@
                     <span class="count_top">
                         <i class="fa fa-user"></i>Tổng số tệp
                     </span>
-                    <div class="count">512</div>
+                    <div class="count">{{private_documents.length+public_documents.length}}</div>
                 </div>
 
                 <div class="col-md-3 tile_stats_count">
@@ -91,7 +91,7 @@
                         <i class="fas fa-list-ol"></i>
                         Văn bản đi
                     </span>
-                    <div class="count">231</div>
+                    <div class="count">{{count_send}}</div>
 
                 </div>
                 <div class="col-md-3 tile_stats_count">
@@ -99,7 +99,7 @@
                         <i class="fas fa-list-ol"></i>
                         Văn bản đến
                     </span>
-                    <div class="count">254</div>
+                    <div class="count">{{count_recei}}</div>
 
                 </div>
                 <div class="col-md-3 tile_stats_count">
@@ -107,7 +107,7 @@
                         <i class="fas fa-list-ol"></i>
                         Văn bản nội bộ
                     </span>
-                    <div class="count">643</div>
+                    <div class="count">{{count_internal}}</div>
 
                 </div>
 
@@ -120,13 +120,13 @@
     <div class="row">
 
         <div class="col-8">
-            <p-fieldset legend="Các tài liệu cần phê duyệt">
+            <p-fieldset legend="Các tài liệu cần xử lý">
                 <table class="table table-bordered table-sm">
                     <thead>
                         <tr>
                             <td>Loại văn bản</td>
-                            <td>Trong quá trình</td>
-                            <td>Đã quá hạn</td>
+                            <td>Trong thời gian xử lý</td>
+                            <td>Đã quá thời gian xử lý</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -154,8 +154,8 @@
 
                             </td>
                             <td>
-                                <button (click)="OpenTasks(receive_process_tasks)" class="btn btn-link">
-                                    {{receive_process_tasks.length}}
+                                <button (click)="OpenTasks(receive_expired_tasks)" class="btn btn-link">
+                                    {{receive_expired_tasks.length}}
                                 </button>
 
                             </td>
@@ -169,8 +169,8 @@
 
                             </td>
                             <td>
-                                <button (click)="OpenTasks(interval_process_tasks)" class="btn btn-link">
-                                    {{interval_process_tasks.length}}
+                                <button (click)="OpenTasks(interval_expired_tasks)" class="btn btn-link">
+                                    {{interval_expired_tasks.length}}
                                 </button>
 
                             </td>
@@ -191,22 +191,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-5">
-            <p-fieldset legend="Các văn bản đang chờ xử lý">
+        <div class="col-6">
+            <p-fieldset legend="Các văn bản đang chờ xử lý({{pendingtasks.length}})">
                 <div>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <td>
-                                    STT
+                                    Tên nhiệm vụ
                                 </td>
                                 <td>
-                                    Trạng thái
+                                    Người tạo
                                 </td>
                                 <td>
-                                    Ngày tạo
+                                    Hạn
                                 </td>
-
+                                <td>
+                                    Loại tài liệu
+                                </td>
                                 <td style="width:40px">
 
                                 </td>
@@ -214,17 +216,21 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of pendingtasks;let i=index">
-                                <td>{{i+1}}</td>
                                 <td>
-                                    {{GetTaskName(item.TaskType,item.Status)}}
+                                    {{item.Title}}
                                 </td>
-
                                 <td>
-                                    {{item.CreatedOnDate | date:'dd/MM/yyyy'}}
+                                    {{item.CreatedByUser}}
+                                </td>
+                                <td>
+                                    {{item.DeadLine | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{item.ModuleId}}
                                 </td>
                                 <td>
                                     <button pButton icon="fas fa-eye" class="ui-button-success"
-                                    (click)="ViewTaskDetail1(item.TaskType,item.RelatedId)"  
+                                    (click)="ViewTaskDetail1(item.TaskType,item.RelatedId)"
                                     ></button>
                                 </td>
                             </tr>
@@ -235,8 +241,8 @@
                 </div>
             </p-fieldset>
         </div>
-        <div class="col-7">
-            <p-fieldset legend="Các văn bản đã quá hạn nhưng chưa xử lý">
+        <div class="col-6">
+            <p-fieldset legend="Các văn bản đã quá hạn nhưng chưa xử lý ({{expiredtasks.length}})">
                 <div>
                     <table class="table table-bordered">
                         <thead>
@@ -315,9 +321,7 @@
         </p-table>
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
-            class="ui-button-success"></button>
-        <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+        <button type="button" pButton icon="fas fa-times" (click)="displayTaskDialog=false" label="Hủy bỏ"
             class="ui-button-danger"></button>
     </p-footer>
 </p-dialog>
@@ -353,9 +357,7 @@
         </p-table>
     </div>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="update()" label="Lưu lại"
-            class="ui-button-success"></button>
-        <button type="button" pButton icon="fas fa-times" (click)="displayUpdateDialog=false" label="Hủy bỏ"
+        <button type="button" pButton icon="fas fa-times" (click)="displayDocDialog=false" label="Hủy bỏ"
             class="ui-button-danger"></button>
     </p-footer>
 </p-dialog>
@@ -436,7 +438,7 @@
 
 
     <p-footer>
-        <button type="button" pButton icon="fas fa-times" (click)="displayDetail=false" label="Đóng"
+        <button type="button" pButton icon="fas fa-times" (click)="displayDocDetail=false" label="Đóng"
             class="ui-button-info"></button>
     </p-footer>
 </p-dialog>

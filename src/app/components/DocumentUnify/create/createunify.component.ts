@@ -97,7 +97,7 @@ export class CreateDocUnifyComponent implements OnInit {
                     ConfirmRelatedId:this.current_status.ConfirmRelatedId,
                     PerformRelatedId:this.current_status.PerformRelatedId,
                     RegisterRelatedId:this.current_status.RegisterRelatedId,
-                    UnifyRelatedId:res.Data.ConfirmId,
+                    UnifyRelatedId:res.Data.UnifyId,
                     DisplayName:"Đang đợi thống nhất"
                 };
 
@@ -153,5 +153,8 @@ export class CreateDocUnifyComponent implements OnInit {
         };
         if (list.length > 0) str = str.substr(0, str.lastIndexOf(','));
         return str;
+    }
+    close(){
+        this.ref.close();
     }
 }

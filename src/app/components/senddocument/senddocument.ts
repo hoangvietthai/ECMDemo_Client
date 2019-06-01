@@ -8,6 +8,7 @@ export interface SendDocumentDisplayModel{
     CreatedOnDate?:Date;
     DocumentStatusId?:number;
     DocumentProcessId?:number;
+    DepartmentName?:string;
 }
 export interface BaseSendDocumentModel{
     SendDocumentId?:number;
