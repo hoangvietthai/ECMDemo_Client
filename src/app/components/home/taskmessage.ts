@@ -50,11 +50,12 @@ export enum Module
 }
 //
 export interface PendingTaskModel{
-    Id?:number;//process
+    ModuleId?:number;
     RelatedId?:number;
+    Title?:string;
+    DeadLine?:Date;
     TaskType?:number;
-    CreatedOnDate?:Date;
-    Status?:number;
+    CreatedByUser?:string;
 }
 export interface PendingTaskDetailModel{
     ModuleId?:number;

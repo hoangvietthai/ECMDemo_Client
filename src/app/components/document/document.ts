@@ -41,3 +41,8 @@ export interface DocumentUpdateModel{
     DocumentType?:boolean;
 }
 
+export interface ShareDocumentModel{
+    DocumentId?:number;
+    DepartmentId?:number;
+    Message?:string;
+}

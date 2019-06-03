@@ -79,7 +79,7 @@ export class CreateDocPerformComponent implements OnInit {
             this.current_status=this.config.data.Status;
             this.ModuleId=this.config.data.Module;
             this.createModel.TaskType=this.config.data.TaskType;
-            this.createModel.Name = 'Thống nhất '+this.config.data.Name;
+            this.createModel.Name = 'Thực hiện '+this.config.data.Name;
             this.createModel.RelatedDocumentId=this.config.data.Id;
             this.createModel.ProcessId=this.config.data.ProcessId;
         }
@@ -117,6 +117,9 @@ export class CreateDocPerformComponent implements OnInit {
         });
 
 
+    }
+    close(){
+        this.ref.close();
     }
     SelectDate($value:Date){
         let tmp=new Date($value.toJSON());

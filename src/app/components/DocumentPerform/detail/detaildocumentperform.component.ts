@@ -25,6 +25,8 @@ import { Module, TaskType } from '../../home/taskmessage';
     ]
 })
 export class DetailDocPerformComponent implements OnInit {
+    BreadcrumbItems: MenuItem[];
+    BreadcrumbHome: MenuItem;
     display: boolean = false;
     files_of_doc: any[];
     folder: string;
@@ -52,6 +54,13 @@ export class DetailDocPerformComponent implements OnInit {
         private _receive: ReceivedDocumentService,
         private _internal: InternalDocumentService
     ) {
+        this.BreadcrumbItems = [
+            { label: 'Thực hiện văn bản', url: '' },
+            { label: 'Chi tiết' }
+        ];
+        this.BreadcrumbHome = {
+            icon: "pi pi-home"
+        }
         this.dm_priories=[];
         this.dm_priories.push({
             value:1,
@@ -76,7 +85,6 @@ export class DetailDocPerformComponent implements OnInit {
             this._service.getById(this.Id).subscribe(res => {
                 if (res.Status == 1) {
                     this.mainModel = res.Data;
-                    console.log(this.mainModel);
                     this.responseModel.DocumentPerformId = this.mainModel.PerformId;
                     this.responseModel.CreatedOnDate = new Date();
                     
@@ -96,6 +104,7 @@ export class DetailDocPerformComponent implements OnInit {
                                 this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
                                     if (doc.Status == 1) {
                                         this.documentModel = doc.Data;
+                                        this.documentModel.ReceiverId = this.documentModel.SenderId;
                                         this.documentModel.AttachedFileUrl;
                                         this.files_of_doc = this.documentModel.AttachedFileUrl.split(',').filter(n => n);
                                     }

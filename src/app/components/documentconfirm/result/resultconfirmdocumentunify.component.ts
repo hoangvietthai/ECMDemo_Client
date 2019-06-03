@@ -29,6 +29,8 @@ import { DocumentStatusService } from '../../documentstatus/documentstatus.servi
     ]
 })
 export class ResultDocConfirmComponent implements OnInit {
+    BreadcrumbItems: MenuItem[];
+    BreadcrumbHome: MenuItem;
     display: boolean = false;
     files_of_doc: any[];
     folder: string;
@@ -42,6 +44,7 @@ export class ResultDocConfirmComponent implements OnInit {
     dm_users: SelectItem[];
     dm_partners: SelectItem[];
     InvokeUser: SelectItem;
+    Author: SelectItem;
     dm_priories: SelectItem[];
     displayReConfirm: boolean = false;
     response: DocumentConfirmResponseDisplayModel;
@@ -62,6 +65,13 @@ export class ResultDocConfirmComponent implements OnInit {
         private _receive: ReceivedDocumentService,
         private _internal: InternalDocumentService
     ) {
+        this.BreadcrumbItems = [
+            { label: 'Phê duyệt văn bản', url: '' },
+            { label: 'kết quả' }
+        ];
+        this.BreadcrumbHome = {
+            icon: "pi pi-home"
+        }
         this.dm_priories = [];
         this.dm_priories.push({
             value: 1,
@@ -90,7 +100,9 @@ export class ResultDocConfirmComponent implements OnInit {
             this.Id = params['Id'];
             this._service.getById(this.Id).subscribe(res => {
                 if (res.Status == 1) {
+                   
                     this.mainModel = res.Data;
+                    console.log(this.mainModel.Name)
                     if(this.mainModel.CreatedByUserId!=this.crnt_user.UserId){
                         this.isShowActions=false;
                     }
@@ -134,6 +146,7 @@ export class ResultDocConfirmComponent implements OnInit {
                                         }
                                     })
                                 }
+                                console.log(doc.Status)
                             });
                             break;
                         }
@@ -154,7 +167,18 @@ export class ResultDocConfirmComponent implements OnInit {
                             break;
                         }
                     }
-
+                    this._user.getAllBase().subscribe(res => {
+                        this.dm_users = [];
+                        if (res.Status == 1) {
+                            for (let i = 0; i < res.Data.length; i++) {
+                                this.dm_users.push({
+                                    label: res.Data[i].UserName,
+                                    value: res.Data[i].UserId
+                                });
+                            }
+                        }
+                        this.Author = this.dm_users.filter(u => u.value == this.mainModel.CreatedByUserId)[0];
+                    })
                     this._user.getById(this.mainModel.UserId).subscribe(res => {
 
                         if (res.Status == 1) {

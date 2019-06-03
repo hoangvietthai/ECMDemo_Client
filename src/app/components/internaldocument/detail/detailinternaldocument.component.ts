@@ -231,38 +231,30 @@ export class DetailInternalDocumentComponent implements OnInit {
         }
     }
     RealSave() {
-        // this._service.Update(this.mainModel.ReceivedDocumentId, this.updateModel).subscribe(res => {
-        //     if (res.Status == 1) {
-        //         this.files_selected = [];
-        //         this.mainModel = res.Data;
-        //         this.updateModel.Name = this.mainModel.Name;
-        //         this.updateModel.CategoryId = this.mainModel.CategoryId;
-        //         this.updateModel.AttachedFileUrl = this.mainModel.AttachedFileUrl;
-        //         this.files_of_doc = this.updateModel.AttachedFileUrl.split(',').filter(n => n);
-        //         this.updateModel.ResignedNumber = this.mainModel.ResignedNumber;
-        //         this.updateModel.ResignedOnDate = new Date(this.mainModel.ResignedOnDate);
-        //         this.updateModel.DocumentDate = new Date(this.mainModel.DocumentDate);
-        //         this.updateModel.DocumentIndex = this.mainModel.DocumentIndex;
-        //         this.updateModel.SignedByUserId = this.mainModel.SignedByUserId;
+        this._service.Update(this.mainModel.InternalDocumentId, this.updateModel).subscribe(res => {
+            if (res.Status == 1) {
+                this.files_selected = [];
+                this.mainModel=res.Data;
+                this.updateModel.Name = this.mainModel.Name;
+                this.updateModel.Summary = this.mainModel.Summary;
+                this.updateModel.DirectoryId=this.mainModel.DirectoryId;
+                this.updateModel.CategoryId = this.mainModel.CategoryId;
+                this.updateModel.SecretLevel = this.mainModel.SecretLevel;
+                this.updateModel.ProjectId=this.mainModel.ProjectId;
+                this.updateModel.DepartmentId = this.mainModel.DepartmentId;
+                this.updateModel.DocumentStatusId = this.mainModel.DocumentStatusId;
+                this.updateModel.WrittenByUserId=this.mainModel.WrittenByUserId;
 
-        //         this.updateModel.ResponsibleUserId = this.mainModel.ResponsibleUserId;
-        //         this.updateModel.ReceiverId = this.mainModel.ReceiverId;
-        //         this.updateModel.SecretLevel = this.mainModel.SecretLevel;
-        //         this.updateModel.SenderId = this.mainModel.SenderId;
-        //         this.updateModel.ReceiverUserId = this.mainModel.ReceiverUserId;
-        //         this.updateModel.Summary = this.mainModel.Summary;
-        //         this.updateModel.DepartmentId = this.mainModel.DepartmentId;
-
-        //         this.updateModel.DeliveryMethodId = this.mainModel.DeliveryMethodId;
-
-        //         this.updateModel.DocumentStatusId = this.mainModel.DocumentStatusId;
-        //         this.updateModel.LastModifiedByUserId = this.mainModel.LastModifiedByUserId;
-        //         this.messageService.add({ severity: 'info', summary: 'Thay đổi thành công', detail: 'Thông văn bản đến đã được thay đổi thành công' });
-        //     }
-        //     else {
-        //         this.messageService.add({ severity: 'error', summary: 'Thay đổi không thành công', detail: 'Chi tiết: ' + res.Message });
-        //     }
-        // })
+                this.updateModel.LastModifiedByUserId = this.mainModel.LastModifiedByUserId;
+                this.updateModel.AttachedFileUrl = this.mainModel.AttachedFileUrl;
+                this.files_of_doc = this.updateModel.AttachedFileUrl.split(',').filter(n => n)             
+                this.updateModel.ResponsibleUserId = this.mainModel.ResponsibleUserId;
+                this.messageService.add({ severity: 'info', summary: 'Thay đổi thành công', detail: 'Thông văn bản đến đã được thay đổi thành công' });
+            }
+            else {
+                this.messageService.add({ severity: 'error', summary: 'Thay đổi không thành công', detail: 'Chi tiết: ' + res.Message });
+            }
+        })
     }
     OnSelectFile(event, file_input) {
         this.files_selected = file_input.files;

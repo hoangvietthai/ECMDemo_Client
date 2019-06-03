@@ -10,6 +10,7 @@ export interface ReceivedDocumentDisplayModel{
     DocumentIndex?:number;
     DocumentProcessId?:number;
     DocumentStatusId?:number;
+    DepartmentName?:string;
 }
 export interface BaseReceivedDocumentModel{
     ReceivedDocumentId?:number;
