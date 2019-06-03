@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this._task.getExpiredTasks().subscribe(res => {
         if (res.Status == 1) {
           this.expiredtasks = res.Data;
+          console.log(this.expiredtasks)
         }
       })
     }
@@ -236,6 +237,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   GetMessages() {
     this._task.getAllTaks().subscribe(res => {
       if (res.Status == 1) {
+        console.log(res.Data)
         let sends = res.Data.filter(t => t.ModuleId == Module.SEND && !t.IsMyTask);
         this.send_expired_tasks = this.GetExpires(sends);
         this.send_process_tasks = this.GetProcess(sends);
@@ -248,6 +250,24 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.mytasks = res.Data.filter(t => t.IsMyTask);
       }
     });
+  }
+  GetModuleName(moduleId: number) {
+    let str = '';
+    switch (moduleId) {
+      case 2 : {
+        str += "Văn bản đi";
+        break;
+      }
+      case 3 : {
+        str += "Văn bản đến";
+        break;
+      }
+      case 4: {
+        str += "Văn bản nội bộ";
+        break;
+      }
+    }
+    return str;
   }
   GetTaskName(tasketype: number, status: number) {
     let str = '';

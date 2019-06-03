@@ -78,6 +78,7 @@ export class CreateDocUnifyComponent implements OnInit {
                 }
                 this.createModel.AuthorId= JSON.parse(localStorage.getItem('ssuser')).UserId;
                 this.createModel.FinishedOnDate=new Date();
+                console.log(this.createModel.FinishedOnDate)
                 this.createModel.FinishedOnDate.setDate(this.createModel.FinishedOnDate.getDate()+3);
             }
         });

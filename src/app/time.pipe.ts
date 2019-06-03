@@ -34,7 +34,7 @@ export class dateToTimePipe {
     var hours = String(date.getHours());
   
     let month = String(date.getMonth()+1);
-    let day = String(date.getUTCDate());
+    let day = String(date.getUTCDate()+1);
     const year = String(date.getFullYear());
     let dayofweek = date.getDay();
     if (dayofweek == 0) dayofweek = 7;

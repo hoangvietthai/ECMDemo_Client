@@ -191,16 +191,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-6" *ngIf="pendingtasks">
             <p-fieldset legend="Các văn bản đang chờ xử lý({{pendingtasks.length}})">
                 <div>
-                    <table class="table table-bordered">
-                        <thead>
+                    <p-table [value]="pendingtasks" [paginator]="true" [rows]= "5" class="table table-bordered">
+                        <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <td>
                                     Tên nhiệm vụ
                                 </td>
-                                <td>
+                                <td style="width:160px">
                                     Người tạo
                                 </td>
                                 <td>
@@ -209,15 +209,15 @@
                                 <td>
                                     Loại tài liệu
                                 </td>
-                                <td style="width:40px">
+                                <td style="width:60px">
 
                                 </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of pendingtasks;let i=index">
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                            <tr>
                                 <td>
-                                    {{item.Title}}
+                                    {{item.Title }}
                                 </td>
                                 <td>
                                     {{item.CreatedByUser}}
@@ -226,7 +226,7 @@
                                     {{item.DeadLine | date:'dd/MM/yyyy'}}
                                 </td>
                                 <td>
-                                    {{item.ModuleId}}
+                                   {{GetModuleName(item.ModuleId)}}
                                 </td>
                                 <td>
                                     <button pButton icon="fas fa-eye" class="ui-button-success"
@@ -235,22 +235,22 @@
                                 </td>
                             </tr>
 
-                        </tbody>
-                    </table>
+                        </ng-template>
+                    </p-table>
 
                 </div>
             </p-fieldset>
         </div>
-        <div class="col-6">
+        <div class="col-6" *ngIf="expiredtasks">
             <p-fieldset legend="Các văn bản đã quá hạn nhưng chưa xử lý ({{expiredtasks.length}})">
                 <div>
-                    <table class="table table-bordered">
-                        <thead>
+                    <p-table  [value]="expiredtasks" [paginator]="true" [rows]= "5" class="table table-bordered">
+                        <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <td>
                                     Tên nhiệm vụ
                                 </td>
-                                <td>
+                                <td style="width:160px">
                                     Người tạo
                                 </td>
                                 <td>
@@ -259,13 +259,13 @@
                                 <td>
                                     Loại tài liệu
                                 </td>
-                                <td style="width:40px">
+                                <td style="width:60px">
 
                                 </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of expiredtasks;let i=index">
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                            <tr>
                                 <td>
                                     {{item.Title}}
                                 </td>
@@ -276,7 +276,7 @@
                                     {{item.DeadLine | date:'dd/MM/yyyy'}}
                                 </td>
                                 <td>
-                                    {{item.ModuleId}}
+                                    {{GetModuleName(item.ModuleId)}}
                                 </td>
                                 <td>
                                     <button pButton icon="fas fa-eye" class="ui-button-success"
@@ -284,9 +284,8 @@
                                     ></button>
                                 </td>
                             </tr>
-                           
-                        </tbody>
-                    </table>
+                        </ng-template>
+                    </p-table>
                 </div>
             </p-fieldset>
         </div>

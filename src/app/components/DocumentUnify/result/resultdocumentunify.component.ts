@@ -114,7 +114,7 @@ export class ResultDocUnifyComponent implements OnInit {
                             this.tmp_responses = res1.Data;
                         }
                     })
-
+                    console.log(this.mainModel)
                     switch (this.mainModel.ModuleId) {
                         case Module.SEND: {
                             this._send.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {

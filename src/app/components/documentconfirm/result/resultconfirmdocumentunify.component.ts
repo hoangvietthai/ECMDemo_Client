@@ -100,7 +100,9 @@ export class ResultDocConfirmComponent implements OnInit {
             this.Id = params['Id'];
             this._service.getById(this.Id).subscribe(res => {
                 if (res.Status == 1) {
+                   
                     this.mainModel = res.Data;
+                    console.log(this.mainModel.Name)
                     if(this.mainModel.CreatedByUserId!=this.crnt_user.UserId){
                         this.isShowActions=false;
                     }
@@ -144,6 +146,7 @@ export class ResultDocConfirmComponent implements OnInit {
                                         }
                                     })
                                 }
+                                console.log(doc.Status)
                             });
                             break;
                         }

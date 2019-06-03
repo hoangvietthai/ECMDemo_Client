@@ -41,7 +41,7 @@ export class ResultDocPerformComponent implements OnInit {
     mainModel: DocumentPerformModel;
     documentModel: any;
     uploadDataUrl: string = uploadDataUrl;
-    isShowActions: boolean = false;
+    isShowActions: boolean = true;
     dm_users: SelectItem[];
     dm_partners: SelectItem[];
     InvokeUsers: SelectItem[];
@@ -134,6 +134,8 @@ export class ResultDocPerformComponent implements OnInit {
                             this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
                                 if (doc.Status == 1) {
                                     this.documentModel = doc.Data;
+                                    this.documentModel.ReceiverId = this.documentModel.SendId;
+                                    console.log(this.documentModel)
                                     this.FinishModel.ProcessId = this.documentModel.DocumentProcessId;
                                     this.documentModel.AttachedFileUrl;
                                     this.files_of_doc = this.documentModel.AttachedFileUrl.split(',').filter(n => n);

@@ -106,8 +106,8 @@
                 </p-fieldset>
             </div>
         </div>
-        <div *ngIf="response">
-            <div class="row">
+        
+            <div class="row" *ngIf="response">
                 <div class="col-12">
                     <div style="margin: 15px 0;">Kết quả: <input disabled type="text"
                             value="{{finalResult?'Đã phê duyệt':'Không phê duyệt'}}"></div>
@@ -117,14 +117,13 @@
 
                 </div>
             </div>
-            <div *ngIf="isShowActions&&mainModel.IsFinished==0&&response" style="margin-top:15px;">
+            <div *ngIf="isShowActions&&mainModel.IsFinished==0" style="margin-top:15px;">
                 <button pButton type="button" label="Kết thúc phê duyệt" icon="fas fa-check"
                     style="margin-right: .25em !important;" (click)="Finish()"></button>
                 <button pButton class="ui-button-danger" type="button" label="Phê duyệt lại" icon="fas fa-ban"
                     style="margin-right: .25em !important;" (click)="displayReConfirm=true"></button>
             </div>
 
-        </div>
 
 
     </div>

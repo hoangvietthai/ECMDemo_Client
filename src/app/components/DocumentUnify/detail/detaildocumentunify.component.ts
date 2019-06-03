@@ -87,7 +87,6 @@ export class DetailDocUnifyComponent implements OnInit {
             this._service.getById(this.Id).subscribe(res => {
                 if (res.Status == 1) {
                     this.mainModel = res.Data;
-                    console.log(this.mainModel);
                     this.responseModel.DocumentUnifyId = this.mainModel.UnifyId;
                     this.responseModel.CreatedOnDate = new Date();
                     if (this.mainModel.TaskType == 1) {
