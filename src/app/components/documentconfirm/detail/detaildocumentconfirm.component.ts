@@ -87,7 +87,7 @@ export class DetailDocConfirmComponent implements OnInit {
                     this.mainModel = res.Data;
                     this.responseModel.DocumentConfirmId = this.mainModel.ConfirmId;
                     this.responseModel.CreatedOnDate = new Date();
-
+                    
                     switch (this.mainModel.ModuleId) {
                         case Module.SEND: {
                             this._send.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
@@ -102,7 +102,9 @@ export class DetailDocConfirmComponent implements OnInit {
                         case Module.RECEIVE: {
                             this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
                                 if (doc.Status == 1) {
+                                  
                                     this.documentModel = doc.Data;
+                                    console.log(this.documentModel)
                                     this.documentModel.AttachedFileUrl;
                                     this.files_of_doc = this.documentModel.AttachedFileUrl.split(',').filter(n => n);
                                 }

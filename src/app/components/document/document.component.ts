@@ -94,7 +94,7 @@ export class DocumentComponent implements OnInit {
         this.dirs = [];
         this._dir.getAllNodes(0).subscribe(res => {
             if (res.Status == 1) {
-
+                console.log(res.Data)
                 if (this.crnt_user.DepartmentId != 1) {
                     this.dirs.push({
                         label: this.crnt_user.Department,
@@ -137,6 +137,7 @@ export class DocumentComponent implements OnInit {
         }
         this._service.getAll().subscribe(res => {
             if (res.Status == 1) {
+                console.log(res.Data)
                 this.docs = res.Data;
                 this.cols = [
                     { field: 'Name', header: 'Tên gọi' },
@@ -315,12 +316,14 @@ export class DocumentComponent implements OnInit {
     }
     nodeSelect(event) {
         this.selectedNode = event.node;
+        console.log(this.selectedNode)
         if (event.node.data != null) {
             if ((event.node.data == 0) && (this.crnt_user.DepartmentId > 1)) {
                 this._service.getAllShares().subscribe(res => {
                     if (res.Status == 1) {
                         this.docs = [];
                         this.docs = res.Data;
+                        console.log(this.docs)
                     }
                 });
             }

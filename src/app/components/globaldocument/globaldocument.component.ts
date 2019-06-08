@@ -195,6 +195,7 @@ export class GlobalDocumentComponent implements OnInit {
 
         this._service.getAll(this.mainModel).subscribe(res => {
             if (res.Status == 1) {
+                console.log(res.Data)
                 this.docs = null;
                 this.docs = res.Data;
                 this.resultString = true;

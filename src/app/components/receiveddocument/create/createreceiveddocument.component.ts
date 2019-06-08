@@ -37,6 +37,8 @@ export class CreateReceivedDocumentComponent implements OnInit {
     dm_secretlevels:any[];
     dm_partners:SelectItem[];
     users: any[];
+    cate_group: any;
+    cates_depart: SelectItem[];
     departments:SelectItem[];
     dm_contacts: SelectItem[];
     statusDoc:DocumentStatusCreateModel;
@@ -59,6 +61,7 @@ export class CreateReceivedDocumentComponent implements OnInit {
         this.users = [];
         this.dm_cates=[];
         this.departments=[];
+        this.cates_depart=[];
         this.dm_partners=[];
         this.dm_delivery_methods=DeliveryMethods;
         this.dm_secretlevels=SecretLevels;
@@ -81,6 +84,25 @@ export class CreateReceivedDocumentComponent implements OnInit {
             icon: "pi pi-home"
         }
         //
+        this._cate.getActiveGroup().subscribe(res => {
+            this.cate_group = res.Data;
+            if (this.cate_group.DocumentCateGroupId == 2) {
+                this._cate.getAllInGroup(2).subscribe(res1 => {
+    
+                    for (let i = 0; i < res1.Data.length; i++) {
+                        this.cates_depart.push({ value: res1.Data[i].CategoryId, label: res1.Data[i].Name })
+                    }
+                });
+            }
+            else {
+                this._cate.getAllInGroup(1).subscribe(res2 => {
+    
+                    for (let i = 0; i < res2.Data.length; i++) {
+                        this.cates_depart.push({ value: res2.Data[i].CategoryId, label: res2.Data[i].Name })
+                    }
+                });
+            }
+        });
         this._cate.getAll().subscribe(res => {
             if (res.Status == 1) {
                 for (let i = 0; i < res.Data.length; i++) {

@@ -104,6 +104,7 @@ export class DetailDocPerformComponent implements OnInit {
                                 this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
                                     if (doc.Status == 1) {
                                         this.documentModel = doc.Data;
+                                        console.log(this.documentModel)
                                         this.documentModel.ReceiverId = this.documentModel.SenderId;
                                         this.documentModel.AttachedFileUrl;
                                         this.files_of_doc = this.documentModel.AttachedFileUrl.split(',').filter(n => n);

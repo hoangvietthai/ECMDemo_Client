@@ -48,6 +48,8 @@ export class CreateInternalDocumentComponent implements OnInit {
     files_selected:any[];
     folder: string;
     crnt_user:any;
+    cate_group: any;
+    cates_depart: SelectItem[];
     uploadDataUrl: string = uploadDataUrl;
     statusDoc:DocumentStatusCreateModel;
     constructor(
@@ -67,6 +69,7 @@ export class CreateInternalDocumentComponent implements OnInit {
         this.users = [];
         this.dm_cates = [];
         this.departments = [];
+        this.cates_depart = [];
         this.dm_partners = [];
         this.dm_delivery_methods = DeliveryMethods;
         this.dm_secretlevels = SecretLevels;
@@ -112,6 +115,25 @@ export class CreateInternalDocumentComponent implements OnInit {
             icon: "pi pi-home"
         }
         //
+        this._cate.getActiveGroup().subscribe(res => {
+            this.cate_group = res.Data;
+            if (this.cate_group.DocumentCateGroupId == 2) {
+                this._cate.getAllInGroup(2).subscribe(res1 => {
+    
+                    for (let i = 0; i < res1.Data.length; i++) {
+                        this.cates_depart.push({ value: res1.Data[i].CategoryId, label: res1.Data[i].Name })
+                    }
+                });
+            }
+            else {
+                this._cate.getAllInGroup(1).subscribe(res2 => {
+    
+                    for (let i = 0; i < res2.Data.length; i++) {
+                        this.cates_depart.push({ value: res2.Data[i].CategoryId, label: res2.Data[i].Name })
+                    }
+                });
+            }
+        });
         this._cate.getAll().subscribe(res => {
             if (res.Status == 1) {
                 for (let i = 0; i < res.Data.length; i++) {
@@ -169,6 +191,7 @@ export class CreateInternalDocumentComponent implements OnInit {
         });
         this._dir.getAllByModule(1).subscribe(res => {
             if (res.Status == 1) {
+                console.log(res.Data)
                 for (let i = 0; i < res.Data.length; i++) {
                     this.dm_directories.push({
                         value: res.Data[i].DirectoryId,
@@ -219,6 +242,7 @@ export class CreateInternalDocumentComponent implements OnInit {
     realSave(){
         this._status.Create(this.statusDoc).subscribe(res=>{
             if(res.Status==1){
+                console.log(this.createModel)
                 this.createModel.DocumentStatusId=res.Data.Id;
                 this._service.Create(this.createModel).subscribe(res1=>{
                     if(res1.Status==1){

@@ -8,6 +8,8 @@ export interface DocumentDisplayModel{
     CreatedByUserName?:number;
     LastModifiedOnDate?:Date;
     Description?:string;
+    DocumentType?:boolean;
+    LastModifiedByUserId?:number;
 }
 export interface DocumentModel{
     DocumentId?:number;

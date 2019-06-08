@@ -104,6 +104,7 @@ export class DetailDocUnifyComponent implements OnInit {
                             case Module.RECEIVE: {
                                 this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
                                     if (doc.Status == 1) {
+                                        console.log(doc.Data)
                                         this.documentModel = doc.Data;
                                         this.documentModel.AttachedFileUrl;
                                         this.files_of_doc = this.documentModel.AttachedFileUrl.split(',').filter(n => n);

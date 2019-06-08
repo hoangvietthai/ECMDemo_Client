@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from './home.service';
+import { SelectItem, Message, MenuItem, TreeNode, MessageService } from 'primeng/api';
 import { PendingTaskModel, PendingTaskDetailModel, ExpiredTaskModel, TaskMessageModel, TaskMessageDisplayModel, TaskType, Module } from './taskmessage';
 import { DocumentModel } from '../document/document';
 import { DocumentService } from '../document/document.service';
@@ -38,6 +39,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   selectedDoc: DocumentModel;
   count_send: any;
   count_recei: any;
+  dm_cates: SelectItem[];
+  cates_doc: any[];
   count_internal: any;
   selectedTask: TaskMessageDisplayModel;
   displayTaskDialog: boolean = false;
@@ -62,13 +65,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this._task.getPendingTasks().subscribe(res => {
         if (res.Status == 1) {
           this.pendingtasks = res.Data;
-          console.log(this.pendingtasks)
         }
       });
       this._task.getExpiredTasks().subscribe(res => {
         if (res.Status == 1) {
           this.expiredtasks = res.Data;
-          console.log(this.expiredtasks)
         }
       })
     }
@@ -90,6 +91,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.GetMessages();
     this._doc.getAll().subscribe(res => {
       if (res.Status == 1) {
+        console.log(res.Data)
         this.private_documents = res.Data.filter(d => d.DocumentType);
         this.public_documents = res.Data.filter(d => !d.DocumentType);
       }
@@ -103,7 +105,23 @@ export class HomeComponent implements OnInit, OnDestroy {
             label: res.Data[i].Name
           });
         }
-
+        if (this.cates.length > 0) {
+          this.dm_cates = [];
+          this.dm_cates.push({
+              value: null,
+              label: "Tất cả"
+          });
+          this.cates_doc = [];
+          this._cate.getAll().subscribe(res1 => {
+              if (res1.Status == 1) {
+                  for (let i = 0; i < res1.Data.length; i++) {
+                      //this.cates = [...this.cates, { value: res.Data[i].CategoryId, label: res.Data[i].Name }];
+                      this.dm_cates.push({ value: res1.Data[i].CategoryId, label: res1.Data[i].Name });
+                      this.cates_doc = [...this.cates_doc, { value: res1.Data[i].CategoryId, label: res1.Data[i].Name }];
+                  }
+              }
+          });
+      }
       }
     });
   }
@@ -121,7 +139,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   OpenTasks(list: TaskMessageDisplayModel[]) {
     this.selected_tasks = list;
-    console.log(this.selected_tasks);
     this.displayTaskDialog = true;
   }
   ViewTaskDetail(item: TaskMessageDisplayModel) {
@@ -179,9 +196,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         }
       else {
+        console.log(item)
         switch (item.TaskType) {
           case TaskType.UNIFY: {
             this._router.navigate(['/ket-qua-thong-nhat/', item.RelatedId]);
+            break;
           }
           case TaskType.CONFIRM: {
             this._router.navigate(['/ket-qua-phe-duyet/', item.RelatedId]);
@@ -223,21 +242,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   OpenDetail(item) {
     this.selectedDoc = item;
+    console.log(this.selectedDoc)
     this.displayDocDetail = true;
   }
   getCateString(str: string) {
     let _str = '';
     let str_arr = str.split(',').filter(i => i);
-    let results = this.cates.filter(c => c.value).filter(c => str_arr.includes(c.value.toString())).filter(function (el) { return el; });
+    let results = this.cates_doc.filter(c => str_arr.includes(c.value.toString())).filter(function (el) { return el; });
+    console.log(results)
     for (let i = 0; i < results.length; i++) {
-      _str += results[i].label + ',';
+        _str += results[i].label + ',';
     }
     return _str;
-  }
+}
   GetMessages() {
     this._task.getAllTaks().subscribe(res => {
       if (res.Status == 1) {
-        console.log(res.Data)
         let sends = res.Data.filter(t => t.ModuleId == Module.SEND && !t.IsMyTask);
         this.send_expired_tasks = this.GetExpires(sends);
         this.send_process_tasks = this.GetProcess(sends);
