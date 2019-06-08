@@ -13,6 +13,7 @@ import { CreateProcessComponent } from '../documentprocess/create/createprocess.
 import { DocumentProcessService } from '../documentprocess/documentprocess.service';
 import { DetailProcessComponent } from '../documentprocess/detail/detailprocess.component';
 import { ErrorDialogService } from '../shared/error/dialog/errordialog.service';
+import { DepartmentService } from '../department/department.service';
 @Component({
     templateUrl: './senddocument.component.html',
     styleUrls: ['./senddocument.component.css'],
@@ -24,7 +25,8 @@ import { ErrorDialogService } from '../shared/error/dialog/errordialog.service';
         DocumentStatusService,
         ConfirmationService,
         DocumentProcessService,
-        ErrorDialogService
+        ErrorDialogService,
+        DepartmentService
     ]
 })
 export class SendDocumentComponent implements OnInit {
@@ -34,6 +36,7 @@ export class SendDocumentComponent implements OnInit {
     selectedDoc: SendDocumentDisplayModel;
     docs: SendDocumentDisplayModel[];
     dm_partners: SelectItem[];
+    dm_departments: SelectItem[];
     process_methods: MenuItem[];
     constructor(
         private _service: SendDocumentService,
@@ -41,6 +44,7 @@ export class SendDocumentComponent implements OnInit {
         public dialogService: DialogService,
         private messageService: MessageService,
         private _status: DocumentStatusService,
+        private _depart: DepartmentService,
         private confirmationService: ConfirmationService,
         private _process: DocumentProcessService,
         private errorDialogService: ErrorDialogService
@@ -142,16 +146,34 @@ export class SendDocumentComponent implements OnInit {
         this._service.getAll().subscribe(res => {
             if (res.Status == 1) {
                 this.docs = res.Data;
+                console.log(res.Data)
                 this.cols = [
                     { field: 'Name', header: 'Tên gọi' },
                     { field: 'ResignedNumber', header: 'Số đăng ký' },
                     { field: 'ResignedOnDate', header: 'Ngày đăng ký' },
                     { field: 'Receiver', header: 'Người nhận' },
                     { field: 'SignedByUserFullName', header: 'Người ký' },
-                    { field: 'CreatedOnDate', header: 'Ngày tạo' }
+                    { field: 'CreatedOnDate', header: 'Ngày tạo' },
+                    { field: 'DepartmentName', header: 'Phòng ban'}
                 ];
             }
         });
+        this.dm_departments = [];
+        this.dm_departments.push({
+            value: null,
+            label: "Tất cả"
+        });
+        this._depart.getAll().subscribe(res => {
+            if (res.Status == 1) {
+                for (let i=0; i< res.Data.length; i++) {
+                    this.dm_departments.push( {
+                        value: res.Data[i].Name,
+                        label: res.Data[i].Name
+                    });
+                }
+            }
+            console.log(this.dm_departments)
+        })
         this.dm_partners = [];
         this._partner.getAll().subscribe(res => {
             if (res.Status == 1) {

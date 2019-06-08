@@ -8,6 +8,8 @@ export interface DocumentDisplayModel{
     CreatedByUserName?:number;
     LastModifiedOnDate?:Date;
     Description?:string;
+    DocumentType?:boolean;
+    LastModifiedByUserId?:number;
 }
 export interface DocumentModel{
     DocumentId?:number;
@@ -41,3 +43,8 @@ export interface DocumentUpdateModel{
     DocumentType?:boolean;
 }
 
+export interface ShareDocumentModel{
+    DocumentId?:number;
+    DepartmentId?:number;
+    Message?:string;
+}

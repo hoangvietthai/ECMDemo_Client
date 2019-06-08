@@ -1,10 +1,15 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from './home.service';
+import { SelectItem, Message, MenuItem, TreeNode, MessageService } from 'primeng/api';
 import { PendingTaskModel, PendingTaskDetailModel, ExpiredTaskModel, TaskMessageModel, TaskMessageDisplayModel, TaskType, Module } from './taskmessage';
 import { DocumentModel } from '../document/document';
 import { DocumentService } from '../document/document.service';
 import { Router } from '@angular/router';
 import { DocumentCateService } from '../categories/category.service';
+import { SendDocumentService } from '../senddocument/senddocument.service';
+import { ReceivedDocumentService } from '../receiveddocument/receiveddocument.service';
+import { InternalDocumentService } from '../internaldocument/internaldocument.service';
+import { from } from 'rxjs';
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
@@ -13,7 +18,10 @@ import { DocumentCateService } from '../categories/category.service';
   providers: [
     HomeService,
     DocumentService,
-    DocumentCateService
+    DocumentCateService,
+    SendDocumentService,
+    ReceivedDocumentService,
+    InternalDocumentService
   ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -29,23 +37,31 @@ export class HomeComponent implements OnInit, OnDestroy {
   selected_tasks: TaskMessageDisplayModel[];
   selected_docs: DocumentModel[] = [];
   selectedDoc: DocumentModel;
+  count_send: any;
+  count_recei: any;
+  dm_cates: SelectItem[];
+  cates_doc: any[];
+  count_internal: any;
   selectedTask: TaskMessageDisplayModel;
   displayTaskDialog: boolean = false;
   displayDocDialog: boolean = false;
   displayDocDetail: boolean = false;
   cates: any[];
-  private user: any;
+  public user: any;
   pendingtasks: PendingTaskModel[];
   expiredtasks: ExpiredTaskModel[];
   constructor(
     private _task: HomeService,
     private _doc: DocumentService,
     private _router: Router,
-    private _cate: DocumentCateService
+    private _cate: DocumentCateService,
+    private _send: SendDocumentService,
+    private _recei: ReceivedDocumentService,
+    private _internal: InternalDocumentService
   ) { }
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("ssuser"));
-    if (this.user.UserRole == 1) {
+    if (this.user.UserRole == 1 || this.user.UserRole == 2) {
       this._task.getPendingTasks().subscribe(res => {
         if (res.Status == 1) {
           this.pendingtasks = res.Data;
@@ -57,9 +73,25 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       })
     }
+    this._send.getAll().subscribe(res => {
+      if (res.Status == 1) {
+        this.count_send = res.Data.length;
+      }
+    });
+    this._recei.getAll().subscribe(res => {
+      if (res.Status == 1) {
+        this.count_recei = res.Data.length;
+      }
+    });
+    this._internal.getAll().subscribe(res => {
+      if (res.Status == 1) {
+        this.count_internal = res.Data.length;
+      }
+    });
     this.GetMessages();
     this._doc.getAll().subscribe(res => {
       if (res.Status == 1) {
+        console.log(res.Data)
         this.private_documents = res.Data.filter(d => d.DocumentType);
         this.public_documents = res.Data.filter(d => !d.DocumentType);
       }
@@ -73,7 +105,23 @@ export class HomeComponent implements OnInit, OnDestroy {
             label: res.Data[i].Name
           });
         }
-
+        if (this.cates.length > 0) {
+          this.dm_cates = [];
+          this.dm_cates.push({
+              value: null,
+              label: "Tất cả"
+          });
+          this.cates_doc = [];
+          this._cate.getAll().subscribe(res1 => {
+              if (res1.Status == 1) {
+                  for (let i = 0; i < res1.Data.length; i++) {
+                      //this.cates = [...this.cates, { value: res.Data[i].CategoryId, label: res.Data[i].Name }];
+                      this.dm_cates.push({ value: res1.Data[i].CategoryId, label: res1.Data[i].Name });
+                      this.cates_doc = [...this.cates_doc, { value: res1.Data[i].CategoryId, label: res1.Data[i].Name }];
+                  }
+              }
+          });
+      }
       }
     });
   }
@@ -91,7 +139,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   OpenTasks(list: TaskMessageDisplayModel[]) {
     this.selected_tasks = list;
-    console.log(this.selected_tasks);
     this.displayTaskDialog = true;
   }
   ViewTaskDetail(item: TaskMessageDisplayModel) {
@@ -149,9 +196,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         }
       else {
+        console.log(item)
         switch (item.TaskType) {
           case TaskType.UNIFY: {
             this._router.navigate(['/ket-qua-thong-nhat/', item.RelatedId]);
+            break;
           }
           case TaskType.CONFIRM: {
             this._router.navigate(['/ket-qua-phe-duyet/', item.RelatedId]);
@@ -193,17 +242,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   OpenDetail(item) {
     this.selectedDoc = item;
+    console.log(this.selectedDoc)
     this.displayDocDetail = true;
   }
   getCateString(str: string) {
     let _str = '';
     let str_arr = str.split(',').filter(i => i);
-    let results = this.cates.filter(c => c.value).filter(c => str_arr.includes(c.value.toString())).filter(function (el) { return el; });
+    let results = this.cates_doc.filter(c => str_arr.includes(c.value.toString())).filter(function (el) { return el; });
+    console.log(results)
     for (let i = 0; i < results.length; i++) {
-      _str += results[i].label + ',';
+        _str += results[i].label + ',';
     }
     return _str;
-  }
+}
   GetMessages() {
     this._task.getAllTaks().subscribe(res => {
       if (res.Status == 1) {
@@ -219,6 +270,24 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.mytasks = res.Data.filter(t => t.IsMyTask);
       }
     });
+  }
+  GetModuleName(moduleId: number) {
+    let str = '';
+    switch (moduleId) {
+      case 2 : {
+        str += "Văn bản đi";
+        break;
+      }
+      case 3 : {
+        str += "Văn bản đến";
+        break;
+      }
+      case 4: {
+        str += "Văn bản nội bộ";
+        break;
+      }
+    }
+    return str;
   }
   GetTaskName(tasketype: number, status: number) {
     let str = '';
@@ -251,6 +320,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   intervalId = window.setInterval(() => this.GetMessages(), 3000);
+  update() {
+
+  }
   ngOnDestroy() {
     clearInterval(this.intervalId);
   }

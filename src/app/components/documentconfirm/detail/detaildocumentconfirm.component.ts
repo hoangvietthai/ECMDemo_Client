@@ -25,6 +25,8 @@ import { Module } from '../../home/taskmessage';
     ]
 })
 export class DetailDocConfirmComponent implements OnInit {
+    BreadcrumbItems: MenuItem[];
+    BreadcrumbHome: MenuItem;
     display: boolean = false;
     files_of_doc: any[];
     folder: string;
@@ -34,9 +36,10 @@ export class DetailDocConfirmComponent implements OnInit {
     mainModel: DocumentConfirmModel;
     documentModel: any;
     uploadDataUrl: string = uploadDataUrl;
-    responseModel: DocumentConfirmResponseDisplayModel={};
+    responseModel: DocumentConfirmResponseDisplayModel = {};
     isShowActions: boolean = false;
     dm_users: SelectItem[];
+    Author: SelectItem;
     dm_partners: SelectItem[];
     InvokeUser: SelectItem;
     dm_priories: SelectItem[];
@@ -51,6 +54,13 @@ export class DetailDocConfirmComponent implements OnInit {
         private _receive: ReceivedDocumentService,
         private _internal: InternalDocumentService
     ) {
+        this.BreadcrumbItems = [
+            { label: 'Phê duyệt văn bản', url: '' },
+            { label: 'Chi tiết' }
+        ];
+        this.BreadcrumbHome = {
+            icon: "pi pi-home"
+        }
         this.dm_priories = [];
         this.dm_priories.push({
             value: 1,
@@ -77,7 +87,7 @@ export class DetailDocConfirmComponent implements OnInit {
                     this.mainModel = res.Data;
                     this.responseModel.DocumentConfirmId = this.mainModel.ConfirmId;
                     this.responseModel.CreatedOnDate = new Date();
-
+                    
                     switch (this.mainModel.ModuleId) {
                         case Module.SEND: {
                             this._send.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
@@ -90,9 +100,11 @@ export class DetailDocConfirmComponent implements OnInit {
                             break;
                         }
                         case Module.RECEIVE: {
-                             this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
+                            this._receive.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {
                                 if (doc.Status == 1) {
+                                  
                                     this.documentModel = doc.Data;
+                                    console.log(this.documentModel)
                                     this.documentModel.AttachedFileUrl;
                                     this.files_of_doc = this.documentModel.AttachedFileUrl.split(',').filter(n => n);
                                 }
@@ -110,6 +122,18 @@ export class DetailDocConfirmComponent implements OnInit {
                             break;
                         }
                     }
+                    this._user.getAllBase().subscribe(res => {
+                        this.dm_users = [];
+                        if (res.Status == 1) {
+                            for (let i = 0; i < res.Data.length; i++) {
+                                this.dm_users.push({
+                                    label: res.Data[i].UserName,
+                                    value: res.Data[i].UserId
+                                });
+                            }
+                        }
+                        this.Author = this.dm_users.filter(u => u.value == this.mainModel.CreatedByUserId)[0];
+                    })
                     this._user.getById(this.mainModel.UserId).subscribe(res => {
 
                         if (res.Status == 1) {
@@ -132,7 +156,7 @@ export class DetailDocConfirmComponent implements OnInit {
                     })
                 }
             })
-            this._service.GetResponse( this.crnt_user.UserId,this.Id).subscribe(res => {
+            this._service.GetResponse(this.crnt_user.UserId, this.Id).subscribe(res => {
                 if (res.Status == 1) {
                     this.isShowActions = false;
                 }
@@ -176,7 +200,7 @@ export class DetailDocConfirmComponent implements OnInit {
         this.responseModel.ResponseStatus = 0;
         this.save();
     }
-    DetailUser(Id:number){
+    DetailUser(Id: number) {
 
     }
 }

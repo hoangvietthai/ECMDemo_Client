@@ -31,6 +31,8 @@ import { DocumentStatusService } from '../../documentstatus/documentstatus.servi
     styleUrls: ['./resultdocumentunify.component.css']
 })
 export class ResultDocUnifyComponent implements OnInit {
+    BreadcrumbItems: MenuItem[];
+    BreadcrumbHome: MenuItem;
     display: boolean = false;
     files_of_doc: any[];
     folder: string;
@@ -66,6 +68,13 @@ export class ResultDocUnifyComponent implements OnInit {
         private _receive: ReceivedDocumentService,
         private _internal: InternalDocumentService
     ) {
+        this.BreadcrumbItems = [
+            { label: 'Thống nhất văn bản', url: '' },
+            { label: 'Kết quả' }
+        ];
+        this.BreadcrumbHome = {
+            icon: "pi pi-home"
+        }
         this.dm_priories = [];
         this.dm_priories.push({
             value: 1,
@@ -105,7 +114,7 @@ export class ResultDocUnifyComponent implements OnInit {
                             this.tmp_responses = res1.Data;
                         }
                     })
-
+                    console.log(this.mainModel)
                     switch (this.mainModel.ModuleId) {
                         case Module.SEND: {
                             this._send.getById(this.mainModel.RelatedDocumentId).subscribe(doc => {

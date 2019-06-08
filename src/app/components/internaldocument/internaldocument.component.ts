@@ -230,6 +230,7 @@ export class InternalDocumentComponent implements OnInit {
         if (event.node.data != null) {
             this._service.getAllInDirectory(parseInt(event.node.data)).subscribe(res => {
                 if (res.Status == 1) {
+                    console.log(res.Data)
                     this.docs = [];
                     this.docs = res.Data;
                 }
